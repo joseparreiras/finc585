@@ -1,7 +1,8 @@
 <center>
+<h1> FINC 585-3 - Asset Pricing </h1>
 <h1>💾 Data Description</h1>
+
 <p>
-FINC 585-3 - Asset Pricing
 
 *Prof: Torben Andersen*
 
@@ -70,4 +71,4 @@ The TAQ database is divided into 2 types. For the series between 1993 and 2014, 
 
 The file [Shiller_ie_data.csv](Shiller_ie_data.csv) data set consists of monthly stock price, dividends, and earnings data and the consumer price index (to allow conversion to real values), all starting January 1871. The data is directly downloaded from Robert Shiller's [website](https://www.econ.yale.edu/~shiller/data.htm) and more information can be found there.
 
-[^1]: SAS Studio is a web-based application that allows users to write and execute SAS code through a web browser. It is available to all Wharton students and faculty through the WRDS platform. It is commonly used when dealing with large datasets that require processing power beyond what is available in a personal computer and it tends to be faster than running the same code in a local machine in other languages such as Python or R. This should be a good time to learn more about as you will probably use it in the future. The code I used to extract the TAQ database is available [here]()
+[^1]: SAS Studio is a web-based application that allows users to write and execute SAS code through a web browser. It is available to all Wharton students and faculty through the WRDS platform. It is commonly used when dealing with large datasets that require processing power beyond what is available in a personal computer and it tends to be faster than running the same code in a local machine in other languages such as Python or R. This should be a good time to learn more about as you will probably use it in the future. The code I used to extract the TAQ database is also available on the [GitHub Repository](https://github.com/joseparreiras/finc585)
