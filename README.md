@@ -9,7 +9,7 @@ FINC 585-3 - Asset Pricing
 </p>
 </center>
 
-These are the datasets used in the course. You will need to download them for the weekly assignments. If there is any issue with the data, contact me by [email](mailto:jose.neto@kellogg.northwestern.edu). Codes to update this dataset are available on the [GitHub repository](). The datasets are described below:
+These are the datasets used in the course. You will need to download them for the weekly assignments. If there is any issue with the data, contact me by [email](mailto:jose.neto@kellogg.northwestern.edu). Codes to update this dataset are available on the [GitHub repository](https://github.com/joseparreiras/finc585). The datasets are described below:
 
 - [CRSP Daily Stock Data](#crsp-daily-stock-data)
 - [Small Cap Daily Index](#small-cap-daily-index)
