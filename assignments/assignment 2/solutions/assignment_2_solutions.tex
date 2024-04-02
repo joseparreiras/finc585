@@ -1,28 +1,37 @@
 \documentclass[12pt,twoside]{article}
 
 %%%%%%% Loading packages and macros %%%%%%%
-\usepackage{preamble/__packages__}
-\usepackage{preamble/__macro__}
+
+\usepackage{../preamble/__packages__}
+\usepackage{../preamble/__theme__}
+\usepackage{../preamble/__math__}
+
+% Add watermark
+
+\SetWatermarkText{\textsf{NOT TO BE SHARED}}
+\SetWatermarkAngle{45}
+\SetWatermarkScale{3.5}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%% Document %%%%%%%
-\newcommand{\assignment}{ Assignment 2 }
+\newcommand{\assignment}{Assignment 2}
 \newcommand{\course}{FINC 585-3: Asset Pricing}
-\newcommand{\prof}{Torben Andersen}
+\newcommand{\prof}{Torben Andersen \& Zhengyang Jiang}
 \newcommand{\institute}{Kellogg School of Management}
 
 \title{\course-\assignment}
 \author{TA: Jose Antunes-Neto}
-\date{April 20, 2023}
+\date{Spring 2024}
 %%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
 
-\nocite{*}
+% \nocite{*}
 \maketitle
 
-\section{Problem 1.}
-Provide a proof of the Roll estimator for the bid-ask spread based on the return autocorrelation. Using the original paper \citep{roll1984simple}, it should be straightforward to pin down assumptions that will allow for a proof of the results.
+\problem 
+\input{../problems/roll_model.tex}
 
 \begin{solution}
     Following \citet{roll1984simple}, assume that:
@@ -85,45 +94,23 @@ Provide a proof of the Roll estimator for the bid-ask spread based on the return
     \end{table}
     Since \(p_{t-1}\) is equally likely to be either in the bid or the ask and the expected value of \(\Delta p_t\) is zero, we can calculate the covariance:
     \begin{align*}
-        \cov{\Delta p_{t}}{\Delta p_{t+1}} & = \prob{p_{t-1}=B}\bexpvalue{\Delta p_{t+1}\Delta p_{t} \vert p_{t-1}=B} + \prob{p_{t-1}=A}\bexpvalue{\Delta p_{t+1}\Delta p_{t} \vert p_{t-1}=A} \\
+        \cov{\Delta p_{t}, \Delta p_{t+1}} & = \P{p_{t-1}=B}\E{\Delta p_{t+1}\Delta p_{t} \vert p_{t-1}=B} + \P{p_{t-1}=A}\E{\Delta p_{t+1}\Delta p_{t} \vert p_{t-1}=A} \\
         & = \frac{1}{2}\times\frac{1}{4}(-s)\times(+s) + \frac{1}{2}\times\frac{1}{4}(-s)\times(+s) \\ 
         & = -\frac{1}{4}s^2
     \end{align*}
     and construct an estimator of the spread \(s\) as:
     \[
-        \widehat{s} = \sqrt{-\frac{1}{4}\widehat{\mathbb{C}}\left(\Delta p_{t},\Delta p_{t+1}\right)}
+        \widehat{s} = \sqrt{-\frac{1}{4}\widehat\cov\left(\Delta p_{t},\Delta p_{t+1}\right)}
     \]
     For this estimation to be consistent, we need to impose the assumptions from Theorem 7.2.2 in \citet{brockwell2009time} that the returns are stationary, i.e., 
     \[
-        \Delta p_{t} = \sum_{j \in \integer} \psi_j Z_{t-j} \qquad Z_t \sim I.I.D \left(0, \sigma^2\right)
+        \Delta p_{t} = \sum_{j \in \Z} \psi_j Z_{t-j} \qquad Z_t \sim I.I.D \left(0, \sigma^2\right)
     \]
-    with \(\sum_{j \in \integer} |\psi_j| < \infty\) and \(\sum_{j \in \integer} \psi_j^2\abs{j} < \infty\).
+    with \(\sum_{j \in \Z} |\psi_j| < \infty\) and \(\sum_{j \in \Z} \psi_j^2\abs{j} < \infty\).
 \end{solution}
 
-\newpage
-
-\section{Problem 2.}
-
-We now take an initial look at predictive return regressions, where macro-finance variables are used to forecast the future equity premium. The task is to gauge whether there is (statistically significant) evidence of predictability in the S\&P equity-index returns minus the risk-free rate (use 3-month T-bill rates – available from FRED at the St. Louis Fed). \par
-In formal notation, \(\mathbf{r^e(t+1)=r(t+1)-i(t)}\), where \(r(t+1)\) is the monthly continuously compounded nominal return on the S\&P index from the end of month \(t\) to end of month \(t+1\), and \(i(t)\) is the 3-month T-bill rate at the end of month \(t\). \par
-As predictors, we will choose the PE-ratio (price/earnings ratio), the DP-ratio (dividend/price ratio), and the relative interest rate (current 3-month T-bill rate minus the average 3-month T-bill rate over the prior last 12 month). This is labeled \textbf{RREL}. \par
-The data are available from Bob Shiller’s website and are posted on the Canvas site – Shiller has a pre-calculated \textbf{PE} ratio and provides both ç\textbf{dividend} and \textbf{price level} data for the S\&P index. The variable construction can be seen from the Excel formulas generating the scaled data from the raw observations. As indicated, \textbf{T-bill} data are available from
-many sources including FRED. \par
-The relevant predictive OLS regression take the form:
-\[
-    r^e(t+1) = a + b^\prime X(t) + u(t), \hspace{25pt} t = 0,1,\dots,T
-\]
-where \(t\) refers to the (end of) month for the observation.
-
-\begin{enumerate}[label = \alph*)]
-    \item Run the regression above with only the PE-ratio as the explanatory (\(X\)) variable. Use the sample period from January 1963 - December 2022. Obtain OLS standard errors, assuming no heteroskedasticity or autocorrelation in the innovations, and assess the significance of the relevant regression coefficient and compute the \(R^2\) statistic.
-    \item Repeat the exercise from a), but with only the DP-ratio as the explanatory variable.
-    \item Repeat the exercise from a), but with only the RREL as the explanatory variable.
-    \item Repeat the exercise from a), but use both the PE-ratio and the RREL as regressors.
-    \item Now, assess the significance of the regression coefficient(s) in the above regressions using heteroscedasticity robust standard errors (White standard errors).
-    \item Repeat 2.e) with heteroscedasticity and autocorrelation consistent (Newey-West) st. errors.
-    \item Does the change of method for computing standard errors make any difference to the size of the estimated standard errors? Does it change your conclusions?
-\end{enumerate}
+\problem
+\input{../problems/return_predictability.tex}
 
 \begin{solution}
     The results are presented in Tables~\ref{tab:value_reg} and \ref{tab:equal_reg}. The first table presents the results for the regressions for the Value Weighted Index, while the second table presents the results for the Equal Weighted Index. The numbers in parenthesis correspond to the t-statistics using homoskedastic standard errors. The numbers in brackets, using White heteroskedastic std. errors. Finally, the numbers in curly brackets show the t-statistics using the Newey-West standard errors. As we can see, there is not much predictability in the returns when it comes to these factors. Both the Price-to-Earnings and the Dividend-to-Price ratios are not statistically significant in columns (a), (b) and (d) in both tables. The Relative Interest Rate (RREL) is significant at 5\% under all std. errors but the \(R^2\) it is able to generate is really low (usually around 0.9\%). \par
@@ -132,7 +119,7 @@ where \(t\) refers to the (end of) month for the observation.
     \input{tables/equal_reg.tex}
 \end{solution}
 
-\newpage
-\bibliography{preamble/__references__}
+\clearpage
+\bibliography{../preamble/__references__}
 \bibliographystyle{abbrvnat}
 \end{document}

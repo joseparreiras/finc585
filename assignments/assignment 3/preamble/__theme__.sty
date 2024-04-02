@@ -13,11 +13,12 @@
 % Title %
 \makeatletter
 \renewcommand{\maketitle}{\noindent\textnormal{\institute}\hfill\\[0.01in]
-\textnormal{\course }\hfill{Prof: \prof}\\[0.01in]
-\textnormal{\@date}\hfill\textnormal{\@author}\\[0.01in]
+\textnormal{\course }\hfill{Prof. \prof}\\[0.01in]
+\textnormal{\@date}\hfill\\[0.01in]
 \begin{center}
   \Large \textbf{\assignment}
 \end{center}
+% \smallskip\hrule\bigskip
 \thispagestyle{plain}}
 
 % Footnotes %
@@ -57,9 +58,9 @@
   \stepcounter{problem}
   % Create a new section with the current problem number and optional title
   \ifx\relax#1\relax  % Check if the optional argument is provided
-    \section*{Problem \theproblem.}
+    \section*{Problem \theproblem.\label{problem:\theproblem}}
   \else
-    \section*{Problem \theproblem - #1}
+    \section*{Problem \theproblem - #1\label{problem:\theproblem}}
   \fi
 }
 
@@ -103,17 +104,5 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TikZ Symbols %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\usetikzlibrary{arrows.meta, arrows,decorations.pathreplacing,calligraphy}
-% Nodes %
-\tikzstyle{hollow node}=[circle, draw, inner sep=1.5]
-\tikzstyle{solid node}=[circle, draw, fill=black, inner sep=1.5]
-
-% Draw %
-\tikzstyle{information set}=[dashed, bend right]
-\tikzstyle{continuous}=[bend right]
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % S[round-mode=places, round-precision=1, table-format= -1.1,table-space-text-post={~]}]<{{~]}}

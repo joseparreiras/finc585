@@ -39,12 +39,12 @@
 
 % Variance
 \NewDocumentCommand{\var}{o g}{%
-\IfNoValueTF{#2}{\operatorname{\mathbb{V}}\IfValueT{#1}{_{#1}}}%
+\IfNoValueTF{#2}{\mathbb{V}\IfValueT{#1}{_{#1}}}%
 {\,{\mathbb{V}\IfValueT{#1}{_{#1}}}{\bp{#2}}}}
 
 % Covariance
 \NewDocumentCommand{\cov}{o g}{%
-\IfNoValueTF{#2}{\operatorname{\mathbb{C}}\IfValueT{#1}{_{#1}}}%
+\IfNoValueTF{#2}{\mathbb{C}\IfValueT{#1}{_{#1}}}%
 {\,{\mathbb{C}\IfValueT{#1}{_{#1}}}{\bp{#2}}}}
 
 % Correlation
