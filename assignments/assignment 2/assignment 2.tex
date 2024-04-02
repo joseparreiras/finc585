@@ -1,0 +1,53 @@
+\documentclass[12pt,twoside]{article}
+
+%%%%%%% Loading packages and macros %%%%%%%
+\usepackage{preamble/__packages__}
+\usepackage{preamble/__theme__}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%% Document %%%%%%%
+\newcommand{\assignment}{Assignment 2}
+\newcommand{\course}{FINC 585-3}
+\newcommand{\prof}{Torben G. Andersen \& Zhengyang Jiang}
+\newcommand{\institute}{Kellogg School of Management}
+
+\title{\course-\assignment}
+\author{}
+\date{Spring 2024}
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+% \nocite{*}
+\maketitle
+
+% \problem[Roll Model]
+
+% Provide a proof of the Roll estimator for the bid-ask spread based on the return autocorrelation. Using the original paper \citep{roll1984simple}, it should be straightforward to pin down assumptions that will allow for a proof of the results.
+
+\problem
+
+For this problem, we will be using the dataset \texttt{Shiller\_ie\_Data.xls} available on CANVAS, downloaded from \href{http://www.econ.yale.edu/~shiller/data.htm}{Robert Shiller's website}. It has a pre-calculated \textbf{PE} ratio and provides both \textbf{dividend} and \textbf{price level} data for the S\&P index. The variable construction can be seen from the Excel formulas generating the scaled data from the raw observations.\footnote{For more information on the dataset, check the `Data Description.html' also available on CANVAS.} As indicated, \textbf{T-bill} data are available from many sources including FRED. \par
+For this exercise, we take an initial look at predictive return regressions, where macro-finance variables are used to forecast the future equity premium. The task is to gauge whether there is (statistically significant) evidence of predictability in the S\&P equity-index returns minus the risk-free rate (use 3-month T-bill rates – available from FRED at the St. Louis Fed). \par
+In formal notation, \(\mathbf{r^e(t+1)=r(t+1)-i(t)}\), where \(r(t+1)\) is the monthly continuously compounded nominal return on the S\&P index from the end of month \(t\) to end of month \(t+1\), and \(i(t)\) is the 3-month T-bill rate at the end of month \(t\). \par
+As predictors, we will choose the PE-ratio (price/earnings ratio), the DP-ratio (dividend/price ratio), and the relative interest rate (current 3-month T-bill rate minus the average 3-month T-bill rate over the prior last 12 month). This is labeled \textbf{RREL}. \par
+The relevant predictive OLS regression take the form:
+\[
+    r^e(t+1) = a + b^\prime X(t) + u(t), \hspace{25pt} t = 0,1,\dots,T
+\]
+where \(t\) refers to the (end of) month for the observation.
+
+\begin{enumerate}[label = \alph*)]
+    \item Run the regression above with only the PE-ratio as the explanatory (\(X\)) variable. Use the sample period from January 1963 - December 2022. Obtain OLS standard errors, assuming no heteroskedasticity or autocorrelation in the innovations, and assess the significance of the relevant regression coefficient and compute the \(R^2\) statistic.
+    \item Repeat the exercise from a), but with only the DP-ratio as the explanatory variable.
+    \item Repeat the exercise from a), but with only the RREL as the explanatory variable.
+    \item Repeat the exercise from a), but use both the PE-ratio and the RREL as regressors.
+    \item\label{item:hc0} Now, assess the significance of the regression coefficient(s) in the above regressions using heteroscedasticity robust standard errors (White standard errors).
+    \item Repeat \ref{item:hc0} with heteroscedasticity and autocorrelation consistent (Newey-West) st. errors.
+    \item Does the change of method for computing standard errors make any difference to the size of the estimated standard errors? Does it change your conclusions?
+\end{enumerate}
+
+% \clearpage
+% \bibliographystyle{plainnat}
+% \bibliography{preamble/__references__}
+\end{document}

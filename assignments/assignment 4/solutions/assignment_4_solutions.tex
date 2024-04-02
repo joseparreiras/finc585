@@ -1,0 +1,250 @@
+\documentclass[12pt,twoside]{article}
+
+%%%%%%% Loading packages and macros %%%%%%%
+\usepackage{preamble/__packages__}
+\usepackage{preamble/__macro__}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%% Document %%%%%%%
+\newcommand{\assignment}{Assignment 4}
+\newcommand{\course}{FINC 585-3: Asset Pricing}
+\newcommand{\prof}{Torben Andersen}
+\newcommand{\institute}{Kellogg School of Management}
+
+\title{\course-\assignment}
+\author{TA: Jose Antunes-Neto}
+\date{\today}
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\maketitle
+
+\section{Problem 1.}
+This assignment studies conditions under which the Fama-MacBeth (FM) esti-
+mator is T-consistent (i.e., \(\widehat\beta_{FM} \to \beta\), as \(T \to \infty\) for fixed \(N\)). We also look at cases, where the FM standard errors may be biased. You may find it useful to review the following papers:
+\begin{itemize}
+    \item Petersen, M.A. (2009), ``Estimating Standard Errors in Finance Panel Datasets: Comparing Approaches" Review of Financial Studies 22(1):435-480
+    \item Skoulakis, G. (2008), ``Panel Data Inference in Finance: Least-squares vs Fama-MacBeth", Working Paper, University of Maryland
+\end{itemize}
+Consider the following model:
+\begin{equation}
+    \label{eq:y_dgp}
+    y_{it} = \beta x_{it} + \varepsilon_{it} \qquad i = 1, \dots, N \quad t = 1, \dots, T
+\end{equation}
+where \(y_{it}\) is the dependent variable and \(x_{it}\) represents the \(K\times 1\) vector of regressors. Suppose:
+\begin{equation}
+    \label{eq:x_dgp}
+    \begin{aligned}
+        x_{it} & = \mu_i + \eta_{it} \\
+        \varepsilon_{it} & = \gamma_i + \nu_{it}
+    \end{aligned}
+\end{equation}
+where \(mu_i\) and \(\gamma_i\) are the time-invariant random firm effects.
+
+For a given sample size \(T\), the Fama-Macbeth estimator is given by
+\begin{equation}
+    \label{eq:fm_estimator}
+    \widehat\beta^{(T)}_{FM} = \frac{1}{T} \sum_{t=1}^T  \widehat\beta_t
+\end{equation}
+with
+\begin{equation}
+    \label{eq:beta_t}
+    \widehat\beta_t = \left(\sum_{i=1}^N x_{it}x_{it}^\prime\right)^{-1} \left(\sum_{i=1}^N x_{it}y_{it}\right)
+\end{equation}
+
+We want to check under what conditions the FM estimator is T-consistent (i.e., \(\widehat\beta_{FM} \to \beta\) as \(T\to\infty\) for a fixed \(N\)).
+
+We will start with some simulations: Set \(K = 1, T = 5.000\) and \(N =20\). From a standard Normal distribution, independently generate:
+\begin{enumerate}[label = \arabic*.]
+    \item \(\mu_i, \quad i = 1, \dots, 20\)
+    \item \(\gamma_i, \quad i = 1, \dots, 20\)
+    \item \(\eta_{it}, \quad i = 1, \dots, 20 \quad t = 1, \dots, 5.000\)
+    \item \(\nu_{it}, \quad i = 1, \dots, 20 \quad t = 1, \dots, 5.000\)
+\end{enumerate}
+
+\begin{enumerate}[label = (\alph*)]
+    \item  Compute \(\lbrace \varepsilon_{it}, x_{it}\rbrace\) using equation \ref{eq:x_dgp} and then generate the dependent variable using the equation
+    \[
+        y_{it} = 2x_{it} + \varepsilon_{it} \text{ for } i = 1, \dots, 20 \text{ and } t = 1, \dots, 5.000
+    \]
+    Consider the following estimation methods:
+    \begin{enumerate}[label = \arabic*.]
+        \item Traditional FM: For each periof \(t\), compute \(\widehat\beta^{(T)}_{FM}\) using equations \ref{eq:fm_estimator} and \ref{eq:beta_t}. Include an intercept term event thought the true intercept is zero. For a given \(T\), call this estimator \(\beta^{(T)}_{FM}\).
+        \item Demeaned FM: For each firm \(i\), demean both the dependent variable and the regressor by subtracting the time-series averages to get \(\tilde y_{it} = y_{it} - \left(1/T\right)\sum_t y_{it}\) and \(\tilde x_{it} = x_{it} - \left(1/T\right)\sum_t x_{it}\). For a given \(T\), call this estimator \(\widehat \beta^{(T)}_{DFM}\)
+    \end{enumerate}
+    Compute \(\widehat\beta^{(T)}_{FM}\) and \(\widehat\beta^{(T)}_{DFM}\) using the first \(T\) periods of your generated data, where \(T = 100, 200, \dots, 4900, 5000\) (increments of 100). For each estimation method, plot both the estimates and the estimation errors (\(\widehat\beta^T-2\)) as a function of the sample size \(T\). What pattern do you see in each case? Why should you expect to see these patterns? Explain.
+    
+    \begin{solution}
+        I simulate the model for \(T = 5000\) and \(N = 20\) and estimate the Fama-Macbeth estimator for a window of \(t = 100, 200,  \dots, T\). Figure~\ref{fig:beta_fm_a} shows the results for the traditional and the demeaned estimator. As we can see, the demeaned estimator does converges towards the true value of \(\beta\) as \(T\) increases. However, the traditional estimator does not converge, as explained in item (d).
+        \begin{figure}[!htbp]
+            \centering
+            \includegraphics[width=0.6\textwidth]{images/beta_fm_a}
+            \caption{Fama-MacBeth Estimator}
+            \label{fig:beta_fm_a}
+        \end{figure}
+    \end{solution}
+
+    \item Use the same sample for \(\varepsilon_{it}\) and \(\eta_{it}\), set \(\mu_i = 0\) and generate the data as
+    \begin{align*}
+        x_{it} & = \eta_{it} \\
+        y_{it} & = 2x_{it} + \varepsilon_{it}
+    \end{align*}
+    Repeat (a) above using the new sample. Discuss any differences in the results.
+
+    \begin{solution}
+        After removing the firm fixed effect from \(x_{it}\), the traditional estimator seems to be converging towards the true value as \(T\) increases as seen in Figure~\ref{fig:beta_fm_b}. The demeaned estimator behaves identically to the previous case.
+        \begin{figure}[!htbp]
+            \centering
+            \includegraphics[width=0.6\textwidth]{images/beta_fm_b}
+            \caption{Fama-MacBeth Estimator (\(\mu_i = 0\))}
+            \label{fig:beta_fm_b}
+        \end{figure}        
+    \end{solution}
+
+    \item Using the same sample for \(x_{it}\) and \(\nu_{it}\), set \(\gamma_i = 0\) and generate the data as
+    \begin{align*}
+        \varepsilon_{it} & = \nu_{it} \\
+        y_{it} & = 2x_{it} + \varepsilon_{it}
+    \end{align*}
+    Repeat (a) above using the new sample. Discuss any differences in the results.
+        
+    \begin{solution}
+        After removing the fixed effect of the error term, the traditional estimator still looks consistent. See Figure~\ref{fig:beta_fm_c}. The demeaned is consistent as always. Again, the demeaned estimator is identical to the previous cases.
+        \begin{figure}[!htbp]
+            \centering
+            \includegraphics[width=0.6\textwidth]{images/beta_fm_c}
+            \caption{Fama-MacBeth Estimator (\(\gamma_i = 0\))}
+            \label{fig:beta_fm_c}
+        \end{figure}
+    \end{solution}
+
+    \item For (a), (b), and (c), show whether or not the FM estimator and the demeaned FM estimator are T-consistent (Hint: write the expression \(\widehat\beta_{FM}-\beta\) as a function of the \(x_{it}\)`s and the \(\varepsilon_{it}\)`s and substitute the definitions in equations \ref{eq:x_dgp}. Then explain what happens when you let \(T \to \infty\)).
+    \begin{solution}
+        We need to consider the following assumption:
+        \begin{assump}
+            \label{assump:min_eigen}
+            The minimum eigenvalue of \(\sum_i x_{it}x_{it}^\prime\) is bounded from below.
+        \end{assump}
+        This implies that the inverse of \(\sum_ix_{it}x_{it}^\prime\) always exist so that \(\widehat\beta_t\) is always defined. Moreover, it allow us to form an upper bound for the inverse across \(t\). \\
+        We start by showing the consistency of the \textit{Traditional FM} estimator. Consider the \emph{fixed-t} estimator \(\widehat\beta_t\):
+        \begin{align*}
+            \widehat\beta_t & = \left(\sum_i x_{it}x_{it}^\prime\right)^{-1}\left(\sum_i x_{it}y_{it}\right) \\
+            & = \beta + \left(\sum_i x_{it}x_{it}^\prime\right)^{-1}\left(\sum_i x_{it}\varepsilon_{it}\right)
+        \end{align*}
+        Therefore the FM estimator takes the average over \(t\) of \(\widehat\beta_t\)
+        \begin{align*}
+            \widehat\beta^{(T)}_{FM} = \beta + \frac{1}{T}\sum_t\left(\sum_i x_{it}x_{it}^\prime\right)^{-1}\left(\sum_i x_{it}\varepsilon_{it}\right)
+        \end{align*}
+        From Assumption \ref{assump:min_eigen}, we can bound this from above by
+        \[
+            \widehat\beta^{(T)}_{FM}-\beta \leq M\frac{1}{T}\sum_t\sum_i x_{it}\varepsilon_{it}
+        \]
+        where \(M\) is the upper bound for the inverse of \(\sum_i x_{it}x_{it}^\prime\). \\
+        Using equation \ref{eq:x_dgp}:
+        \begin{align*}
+            \label{eq:fm_consistency}
+            \widehat\beta^{(T)}_{FM} - \beta & \leq M\frac{1}{T}\sum_t\sum_i \left(\mu_i+\eta_{it}\right)\left(\gamma_i+\nu_{it}\right) \\
+            & \leq M\frac{1}{T}\sum_t\sum_i\left(\mu_i\gamma_i + \mu_i\nu_{it} + \gamma_i\eta_{it} + \eta_{it}\nu_{it}\right) \\
+            & \leq M\sum_i\mu_i\gamma_i + o_p(1)
+        \end{align*}
+        Where the last line follows from the independence of \((\mu_i, \gamma_i, \eta_{it}, \nu_{it})\). Therefore the consistency of the FM estimator depends on the interaction of the fixed effects of \(x\) and \(\varepsilon\). 
+        
+        In case (b) and (c), we have that either \(\mu_i = 0\) or \(\gamma_i = 0\), so the first term in \eqref{eq:fm_consistency} disappears and the Traditional FM estimator is consistent. In (a), both terms are non-zero, so we don't necessarily have consistency. \\
+
+        The consistency of the \textit{Demeaned FM} estimator follows the same procedure. When we demean our variables in across \(T\), we remove the firm fixed effects in both \(x_{it}\) and \(\varepsilon_{it}\). Therefore the term \(\sum_i \mu_i\gamma_i\) disappears and the estimator is consistent in all cases. To see that simply note that:
+        \begin{align*}
+            \tilde x_{it} & \coloneqq x_{it} - \frac{1}{T}\sum_t x_{it} \\
+            & = \mu_i + \eta_{it} - \frac{1}{T}\sum_t \left(\mu_i + \eta_{it}\right) \\
+            & = \mu_i - \mu_i + \eta_{it} - \frac{1}{T}\sum_t\eta_{it} \\
+            & = \tilde\eta_{it}
+        \end{align*}
+        Equivalently, \(\tilde y_{it} = \beta\tilde x_{it} + \tilde\varepsilon_{it}\) with \(\tilde\varepsilon_{it} = \tilde \nu_{it}\). This equation has no firm fixed effect so \(\widehat\beta^{(T)}_{DFM}\) is always consistent. 
+    \end{solution}
+    
+    \item So far we have been using only firm effects. How would the results in (d) change if we included time effects? Specifically, suppose that
+    \begin{align*}
+        x_{it} & = \delta_t+\eta_{it} \\
+        \varepsilon_{it} & = \psi_t+\nu_{it}
+    \end{align*}
+    Show (using an argument similar to the one in (d)) whether or not the traditional FM is consistent. What about the Demeaned FM? What are your overall conclusions about the consistency of the FM estimators?
+
+    \begin{solution}
+        Similarly to (d), if there are time fixed effects, then the demeaning of \(\widehat\beta^{(T)}_{DFM}\) does not remove the fixed effect. \\
+        For the traditional estimator we then have, similarly to the derivations above,
+        \begin{align*}
+            \widehat\beta^{(T)}_{FM} - \beta & \leq M \frac{1}{T}\sum_t\sum_i \left(\delta_t+\eta_{it}\right)\left(\psi_t+\nu_{it}\right) \\
+            & \leq M\frac{1}{T}\sum_t\left(\delta_t\psi_t + \delta_t\sum_i\nu_{it} + \psi_t\sum_i\eta_{it} + \sum_i\eta_{it}\nu_{it}\right) \\
+            & \leq M\frac{1}{T}\sum_t \delta_t\psi_t + o_p(1)
+        \end{align*}
+        Therefore both estimator are consistent if the time fixed effects of \(x_{it}\) and \(\varepsilon_{it}\) are uncorrelated.
+    \end{solution}
+
+    \item For each case above, show whether or not the estimated variance of the FM estimator calculated as 
+    \[
+        S^2\left(\widehat\beta^{(T)}_{FM}\right) = \frac{1}{T} \sum_t \frac{\left(\widehat\beta_t-\widehat\beta_{FM}^{(T)}\right)^2}{T-1}
+    \]
+    is an unbiased estimator of the true variance \(\var{\widehat\beta_{FM}^{(T)}}\). Also show whether or not the true variance \(\var{\widehat\beta^{(T)}_{FM}}\) goes to 0 as \(T \to \infty\).
+    \begin{solution}
+        I show that the estimated variance of the FM is unbiased under the following assumptions:
+        \begin{assump}
+            \label{assump:no_fe}
+            There is no firm fixed effects in \(x_{it}\) or \(\varepsilon_{it}\)
+        \end{assump}
+        which is the case of (b) and (c) or if the variables are demeaned. \\
+        Let \(p_{it} \coloneqq \left(\sum_i x_{it}x_{it}^\prime\right)^{-1}x_{it}\). Then we can rewrite 
+        \[
+            \widehat\beta_t = \beta + \sum_i p_{it}\varepsilon_{it}
+        \]
+        The considered DGP is the one in \eqref{eq:x_dgp} with firm fixed effects only and \(\varepsilon_{it}\) and \(x_{is}\) are independent for every \((t,s)\). We first consider the variance of the traditional FM estimator. 
+        \begin{align*}
+            \var{\widehat\beta^{(T)}_{FM}} & = \frac{1}{T^2} \var{\sum_t\sum_i p_{it}\varepsilon_{it}} = \frac{1}{T^2}\sum_i \var{\sum_t p_{it}\varepsilon_{it}} \\
+            & = \frac{1}{T^2}\sum_t\sum_i \var{p_{it}\varepsilon_{it}} + \frac{1}{T^2}\sum_i\sum_t\sum_{s\neq t}\cov{p_{it}\varepsilon_{it}}{p_{is}\varepsilon_{is}} \\
+            & = \frac{1}{T^2}\sum_t\sum_i \bexpvalue{\varepsilon_{it}^2p_{it}p_{it}^\prime} + \frac{1}{T^2}\sum_i\sum_t\sum_{s\neq t}\bexpvalue{\varepsilon_{it}\varepsilon_{is}p_{it}p_{is}^\prime} \\
+            & = \frac{1}{T^2}\sum_t\sum_i\bexpvalue{\varepsilon_{it}^2 p_{it}p_{it}^\prime} 
+        \end{align*}
+        Where the last line follows from Assumption \ref{assump:no_fe}.
+        
+        From the condition that \(\bexpvalue{\varepsilon_{it}\vert x_{it}} = 0\), \(\widehat\beta_t\) is an unbiased estimator of \(\beta\) and so is  \(\widehat\beta^{(T)}_{FM}\). We can therefore write
+        \begin{equation}
+            \begin{aligned}
+                \label{eq:fm_variance}
+            \bexpvalue{S^2\left(\widehat\beta^{(T)}_{FM}\right)} & = \frac{1}{T} \sum_t \frac{\bexpvalue{\left(\widehat\beta_t - \widehat\beta^{ (T)}_{FM}\right)^2}}{T-1} \\
+            & = \frac{1}{T(T-1)} \sum_t \bexpvalue{\left(\widehat\beta_t \pm \beta - \widehat\beta^{ (T)}_{FM}\right)^2} \\ 
+            & = \frac{1}{T(T-1)}\sum_t \var{\widehat\beta_t} -  2\bexpvalue{\left(\widehat\beta_t - \beta\right)\left(\widehat\beta^{(T)}_{FM}-\beta\right)} + \var{\widehat\beta^{(T)}_{FM}}
+            \end{aligned}
+        \end{equation}
+        We evaluate each of these terms individually.
+        \begin{align*}
+            \var{\widehat\beta_t} & = \bvar{\sum_i p_{it}\varepsilon_{it}} = \sum_i\var{p_{it}\varepsilon_{it}} = \sum_i\bexpvalue{\varepsilon_{it}^2p_{it}p_{it}^\prime} 
+        \end{align*}
+        Finally
+        \begin{align*}
+            \bexpvalue{\left(\widehat\beta_t-\beta\right)\left(\widehat\beta^{(T)}_{FM}-\beta\right)^\prime} & = \bexpvalue{\sum_ip_{it}\varepsilon_{it}\frac{1}{T}\sum_s\sum_j\varepsilon_{js}p_{js}^\prime} \\
+            & = \frac{1}{T}\bexpvalue{\sum_i \varepsilon_{it}p_{it}\sum_s\sum_j\varepsilon_{js}p_{js}^\prime} \\
+            & = \frac{1}{T}\bexpvalue{\sum_i \varepsilon_{it}^2p_{it}p_{it}^\prime} + \frac{1}{T}\bexpvalue{\sum_i\sum_{s \neq t}\varepsilon_{it}\varepsilon_{is}p_{it}p_{is}^\prime} \\
+            & = \frac{1}{T}\sum_i\bexpvalue{\varepsilon_{it}^2p_{it}p_{it}^\prime}
+        \end{align*}
+        Again, last line follows from Assumption \ref{assump:no_fe}. Combining altogether,
+        \begin{align*}
+            \tiny
+            \bexpvalue{S^2(\widehat\beta^{(T)}_{FM})} = & \frac{1}{T(T-1)}\sum_t\sum_i\bexpvalue{\varepsilon_{it}^2p_{it}p_{it}^\prime}  - \frac{2}{T(T-1)}\frac{1}{T}\sum_t\sum_i \bexpvalue{\varepsilon_{it}^2p_{it}p_{it}^\prime} \\ & + \frac{1}{T(T-1)}\sum_t\var{\widehat\beta^{(T)}_{FM}} \\ 
+            = & \frac{T}{T-1}\var{\widehat\beta^{(T)}_{FM}} - \frac{2}{T-1}\var{\widehat\beta^{(T)}_{FM}} + \frac{1}{T-1}\var{\widehat\beta^{(T)}_{FM}} \\
+            = & \var{\widehat\beta^{(T)}_{FM}}
+        \end{align*}
+        Therefore the estimator is unbiased.
+
+        We now turn to the true variance of \(\widehat\beta^{(T)}_{FM}\). Recall
+        \[
+            \var{\widehat\beta^{(T)}_{FM}} = \frac{1}{T^2}\sum_i\sum_t\bexpvalue{\varepsilon_{it}^2p_{it}p_{it}^\prime}
+        \]
+        from Assumption~\ref{assump:min_eigen} we have that \(p_{it} \leq Mx_{it}\). Therefore
+        \begin{align*}
+            \var{\widehat\beta^{(T)}_{FM}}  \leq M^2\frac{1}{T^2}\sum_i\sum_t\bexpvalue{\varepsilon_{it}^2x_{it}x_{it}^\prime}
+        \end{align*}
+        Therefore under the assumption that \(\bexpvalue{\varepsilon_{it}^2 x_{it}x_{it}^\prime}\) is bounded we have that 
+        \[
+            \var{\widehat\beta^{(T)}_{FM}} \to 0 \text{ as } T \to \infty
+        \]
+    \end{solution}
+\end{enumerate}
+\end{document}

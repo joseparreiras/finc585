@@ -1,2 +1,8 @@
 /.DS_Store
 /config.json
+**/.history/
+**/__pycache__/
+*.log
+*.synctex.gz
+*.bbl
+**/.DS_Store
