@@ -30,84 +30,84 @@
 % \nocite{*}
 \maketitle
 
-\problem 
-\input{../problems/roll_model.tex}
+% \problem 
+% \input{../problems/roll_model.tex}
 
-\begin{solution}
-    Following \citet{roll1984simple}, assume that:
-    \begin{enumerate}[label = \arabic*)]
-        \item The asset is traded in a informativelly efficient market;
-        \item The probability distribution of the asset return is stationary;
-        \item There are no trading costs;
-        \item There is a market maker providing liquidity which knows the efficient value of the asset.
-    \end{enumerate}
-    The market maker operates by choosing a bid-ask spread \(s\) symmetric around the efficient price \(p\). Under these assumptions, the price conveil all the information available about the market and any changes to the price must be due to unantecipated information. Therefore, the price path can be described by Figure~\ref{fig:roll_model} where each possible path has equal probability.
-    \begin{figure}[!htbp]
-        \centering
-        \begin{tikzpicture}
-            \node[circle, left] at (0,4.8) {Ask Price};
-            \node[circle, left] at (0,0.2) {Bid Price};
-            \draw[dashed] (0, 5) -- (10, 5) node[right] {};
-            \draw[dashed] (0, 2.5) -- (11, 2.5) node[right] {Value};
-            \draw[dashed] (0, 0) -- (10, 0) node[right] {};
-            \fill (0,0) circle (0.1) node[below]{\(t-1\)};
-            \fill (5,0) circle (0.1) node[below]{\(t\)};
-            \fill (10,0) circle (0.1) node[below]{\(t+1\)};
-            \fill (10,5) circle (0.1);
-            \fill (5,5) circle (0.1);
-            \draw[-{Latex[length=10pt,width=10pt]}] (0,0) -- (4.9,0);
-            \draw[-{Latex[length=10pt,width=10pt]}] (0,0) -- (4.9,4.9);
-            \draw[-{Latex[length=10pt,width=10pt]}] (5,5) -- (9.9,5);
-            \draw[-{Latex[length=10pt,width=10pt]}] (5,5) -- (9.9,0.1);
-            \draw[-{Latex[length=10pt,width=10pt]}] (5,0) -- (9.9,0);
-            \draw[-{Latex[length=10pt,width=10pt]}] (5,0) -- (9.9,4.9);
-            \draw [decorate, decoration = {brace, amplitude = 10pt}, line width = 2pt] (-2,0.1) --  (-2,4.9);
-            \node[left] at (-2.5, 2.5) {Spread};
-        \end{tikzpicture}
-        \caption{Price path in the Roll model}
-        \label{fig:roll_model}
-    \end{figure}
-    \\
-    In other words, the joint distribution of the price change (\(\Delta p\)) at \(t\) and \(t+1\) conditional on \(p_{t-1}\) being at the ask (\(A\)) or bid (\(B\)) price is given by:
-    \begin{table}[H]
-        \centering
-        \begingroup
-        \color{nu purple}
-        \begin{tabular}{cccc}
-            & & \multicolumn{2}{c}{\(p_{t-1} = B\)} \\\\
-            & & \multicolumn{2}{c}{\(\Delta p_{t}\)} \\
-            & & 0 & \(+s\) \\ \cline{3-4} 
-            & \multicolumn{1}{c|}{\(-s\)} & \multicolumn{1}{c|}{0}   & \multicolumn{1}{c|}{\(\sfrac{1}{4}\)} \\ \cline{3-4} 
-    $\Delta p_{t+1}$ & \multicolumn{1}{c|}{0}  & \multicolumn{1}{l|}{\(\sfrac{1}{4}\)} & \multicolumn{1}{c|}{\(\sfrac{1}{4}\)} \\ \cline{3-4} 
-            & \multicolumn{1}{c|}{\(+s\)} & \multicolumn{1}{c|}{\(\sfrac{1}{4}\)} & \multicolumn{1}{c|}{0}   \\ \cline{3-4} 
-        \end{tabular}
-        \qquad
-        \begin{tabular}{cccc}
-             & \multicolumn{2}{c}{\(p_{t-1} = A\)} & \\\\
-             & \multicolumn{2}{c}{\(\Delta p_{t}\)} & \\
-             & \(-s\) & 0 & \\ \cline{2-3} 
-             \multicolumn{1}{c|}{\(-s\)} & \multicolumn{1}{c|}{0}   & \multicolumn{1}{c|}{\(\sfrac{1}{4}\)} & \\ \cline{2-3} 
-      \multicolumn{1}{c|}{0}  & \multicolumn{1}{l|}{\(\sfrac{1}{4}\)} & \multicolumn{1}{c|}{\(\sfrac{1}{4}\)} & $\Delta p_{t+1}$ \\ \cline{2-3} 
-             \multicolumn{1}{c|}{\(+s\)} & \multicolumn{1}{c|}{\(\sfrac{1}{4}\)} & \multicolumn{1}{c|}{0}  & \\ \cline{2-3} 
-        \end{tabular}
-        \endgroup
-    \end{table}
-    Since \(p_{t-1}\) is equally likely to be either in the bid or the ask and the expected value of \(\Delta p_t\) is zero, we can calculate the covariance:
-    \begin{align*}
-        \cov{\Delta p_{t}, \Delta p_{t+1}} & = \P{p_{t-1}=B}\E{\Delta p_{t+1}\Delta p_{t} \vert p_{t-1}=B} + \P{p_{t-1}=A}\E{\Delta p_{t+1}\Delta p_{t} \vert p_{t-1}=A} \\
-        & = \frac{1}{2}\times\frac{1}{4}(-s)\times(+s) + \frac{1}{2}\times\frac{1}{4}(-s)\times(+s) \\ 
-        & = -\frac{1}{4}s^2
-    \end{align*}
-    and construct an estimator of the spread \(s\) as:
-    \[
-        \widehat{s} = \sqrt{-\frac{1}{4}\widehat\cov\left(\Delta p_{t},\Delta p_{t+1}\right)}
-    \]
-    For this estimation to be consistent, we need to impose the assumptions from Theorem 7.2.2 in \citet{brockwell2009time} that the returns are stationary, i.e., 
-    \[
-        \Delta p_{t} = \sum_{j \in \Z} \psi_j Z_{t-j} \qquad Z_t \sim I.I.D \left(0, \sigma^2\right)
-    \]
-    with \(\sum_{j \in \Z} |\psi_j| < \infty\) and \(\sum_{j \in \Z} \psi_j^2\abs{j} < \infty\).
-\end{solution}
+% \begin{solution}
+%     Following \citet{roll1984simple}, assume that:
+%     \begin{enumerate}[label = \arabic*)]
+%         \item The asset is traded in a informativelly efficient market;
+%         \item The probability distribution of the asset return is stationary;
+%         \item There are no trading costs;
+%         \item There is a market maker providing liquidity which knows the efficient value of the asset.
+%     \end{enumerate}
+%     The market maker operates by choosing a bid-ask spread \(s\) symmetric around the efficient price \(p\). Under these assumptions, the price conveil all the information available about the market and any changes to the price must be due to unantecipated information. Therefore, the price path can be described by Figure~\ref{fig:roll_model} where each possible path has equal probability.
+%     \begin{figure}[!htbp]
+%         \centering
+%         \begin{tikzpicture}
+%             \node[circle, left] at (0,4.8) {Ask Price};
+%             \node[circle, left] at (0,0.2) {Bid Price};
+%             \draw[dashed] (0, 5) -- (10, 5) node[right] {};
+%             \draw[dashed] (0, 2.5) -- (11, 2.5) node[right] {Value};
+%             \draw[dashed] (0, 0) -- (10, 0) node[right] {};
+%             \fill (0,0) circle (0.1) node[below]{\(t-1\)};
+%             \fill (5,0) circle (0.1) node[below]{\(t\)};
+%             \fill (10,0) circle (0.1) node[below]{\(t+1\)};
+%             \fill (10,5) circle (0.1);
+%             \fill (5,5) circle (0.1);
+%             \draw[-{Latex[length=10pt,width=10pt]}] (0,0) -- (4.9,0);
+%             \draw[-{Latex[length=10pt,width=10pt]}] (0,0) -- (4.9,4.9);
+%             \draw[-{Latex[length=10pt,width=10pt]}] (5,5) -- (9.9,5);
+%             \draw[-{Latex[length=10pt,width=10pt]}] (5,5) -- (9.9,0.1);
+%             \draw[-{Latex[length=10pt,width=10pt]}] (5,0) -- (9.9,0);
+%             \draw[-{Latex[length=10pt,width=10pt]}] (5,0) -- (9.9,4.9);
+%             \draw [decorate, decoration = {brace, amplitude = 10pt}, line width = 2pt] (-2,0.1) --  (-2,4.9);
+%             \node[left] at (-2.5, 2.5) {Spread};
+%         \end{tikzpicture}
+%         \caption{Price path in the Roll model}
+%         \label{fig:roll_model}
+%     \end{figure}
+%     \\
+%     In other words, the joint distribution of the price change (\(\Delta p\)) at \(t\) and \(t+1\) conditional on \(p_{t-1}\) being at the ask (\(A\)) or bid (\(B\)) price is given by:
+%     \begin{table}[H]
+%         \centering
+%         \begingroup
+%         \color{nu purple}
+%         \begin{tabular}{cccc}
+%             & & \multicolumn{2}{c}{\(p_{t-1} = B\)} \\\\
+%             & & \multicolumn{2}{c}{\(\Delta p_{t}\)} \\
+%             & & 0 & \(+s\) \\ \cline{3-4} 
+%             & \multicolumn{1}{c|}{\(-s\)} & \multicolumn{1}{c|}{0}   & \multicolumn{1}{c|}{\(\sfrac{1}{4}\)} \\ \cline{3-4} 
+%     $\Delta p_{t+1}$ & \multicolumn{1}{c|}{0}  & \multicolumn{1}{l|}{\(\sfrac{1}{4}\)} & \multicolumn{1}{c|}{\(\sfrac{1}{4}\)} \\ \cline{3-4} 
+%             & \multicolumn{1}{c|}{\(+s\)} & \multicolumn{1}{c|}{\(\sfrac{1}{4}\)} & \multicolumn{1}{c|}{0}   \\ \cline{3-4} 
+%         \end{tabular}
+%         \qquad
+%         \begin{tabular}{cccc}
+%              & \multicolumn{2}{c}{\(p_{t-1} = A\)} & \\\\
+%              & \multicolumn{2}{c}{\(\Delta p_{t}\)} & \\
+%              & \(-s\) & 0 & \\ \cline{2-3} 
+%              \multicolumn{1}{c|}{\(-s\)} & \multicolumn{1}{c|}{0}   & \multicolumn{1}{c|}{\(\sfrac{1}{4}\)} & \\ \cline{2-3} 
+%       \multicolumn{1}{c|}{0}  & \multicolumn{1}{l|}{\(\sfrac{1}{4}\)} & \multicolumn{1}{c|}{\(\sfrac{1}{4}\)} & $\Delta p_{t+1}$ \\ \cline{2-3} 
+%              \multicolumn{1}{c|}{\(+s\)} & \multicolumn{1}{c|}{\(\sfrac{1}{4}\)} & \multicolumn{1}{c|}{0}  & \\ \cline{2-3} 
+%         \end{tabular}
+%         \endgroup
+%     \end{table}
+%     Since \(p_{t-1}\) is equally likely to be either in the bid or the ask and the expected value of \(\Delta p_t\) is zero, we can calculate the covariance:
+%     \begin{align*}
+%         \cov{\Delta p_{t}, \Delta p_{t+1}} & = \P{p_{t-1}=B}\E{\Delta p_{t+1}\Delta p_{t} \vert p_{t-1}=B} + \P{p_{t-1}=A}\E{\Delta p_{t+1}\Delta p_{t} \vert p_{t-1}=A} \\
+%         & = \frac{1}{2}\times\frac{1}{4}(-s)\times(+s) + \frac{1}{2}\times\frac{1}{4}(-s)\times(+s) \\ 
+%         & = -\frac{1}{4}s^2
+%     \end{align*}
+%     and construct an estimator of the spread \(s\) as:
+%     \[
+%         \widehat{s} = \sqrt{-\frac{1}{4}\widehat\cov\left(\Delta p_{t},\Delta p_{t+1}\right)}
+%     \]
+%     For this estimation to be consistent, we need to impose the assumptions from Theorem 7.2.2 in \citet{brockwell2009time} that the returns are stationary, i.e., 
+%     \[
+%         \Delta p_{t} = \sum_{j \in \Z} \psi_j Z_{t-j} \qquad Z_t \sim I.I.D \left(0, \sigma^2\right)
+%     \]
+%     with \(\sum_{j \in \Z} |\psi_j| < \infty\) and \(\sum_{j \in \Z} \psi_j^2\abs{j} < \infty\).
+% \end{solution}
 
 \problem
 \input{../problems/return_predictability.tex}

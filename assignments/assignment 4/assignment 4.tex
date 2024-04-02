@@ -3,10 +3,11 @@
 %%%%%%% Loading packages and macros %%%%%%%
 \usepackage{preamble/__packages__}
 \usepackage{preamble/__theme__}
+\usepackage{preamble/__math__}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%% Document %%%%%%%
-\newcommand{\assignment}{Assignment 2}
+\newcommand{\assignment}{Assignment 4}
 \newcommand{\course}{FINC 585-3: Asset Pricing}
 \newcommand{\prof}{Torben G. Andersen \& Zhengyang Jiang}
 \newcommand{\institute}{Kellogg School of Management}
@@ -20,15 +21,15 @@
 
 \begin{document}
 
-% \nocite{*}
+
+\nocite{*}
 \maketitle
 
-% \problem[Roll Model]
-% \input{problems/roll_model.tex}
 
 \problem
-\input{problems/return_predictability.tex}
+\input{problems/fama_macbeth}
 
-% \bibliographystyle{plainnat}
-% \bibliography{preamble/__references__}
+\clearpage
+\bibliography{preamble/__references__}
+\bibliographystyle{abbrvnat}
 \end{document}
