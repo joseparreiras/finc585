@@ -1,0 +1,24 @@
+\begin{solution}
+    Recall from the lecture notes that the Variance Difference (VD) statistic is defined as:
+    \[
+        VD(q) = \wh\sigma_a^2-\wh\sigma_b^2
+    \]
+    Also, recall that the asymptotic distribution of the estimators is given by:
+    \[
+        \sqrt{nq}\begin{pmatrix}\wh\sigma_a^2-\sigma^2 \\ \wh\sigma_b^2- \sigma^2\end{pmatrix} \sim N\bp{0, \begin{pmatrix} 2\sigma^4 & 2\sigma^4 \\ 2\sigma^4 & 2q\sigma^4 \end{pmatrix}}  
+    \]
+    Using the Delta Method we have that:
+    \[
+        \sqrt{nq}VD(q) \dto \grad VD\rvert_{\sigma^2, \sigma^2} N\bp{0, \begin{pmatrix} 2\sigma^4 & 2\sigma^4 \\ 2\sigma^4 & 2q\sigma^4 \end{pmatrix}}
+    \]
+    Taking the derivatives of VD w.r.t \(\wh\sigma_a^2\) and \(\wh\sigma_b^2\) we get:
+    \[
+        \grad VD = \begin{pmatrix}
+            1 & -1
+        \end{pmatrix}
+    \]
+    Therefore the the asymptotic variance of VD is:
+    \[
+        \begin{pmatrix}1 & -1\end{pmatrix}\begin{pmatrix} 2\sigma^4 & 2\sigma^4 \\ 2\sigma^4 & 2q\sigma^4 \end{pmatrix}\begin{pmatrix}1 \\ -1\end{pmatrix} = 2\sigma^4(q-1)
+    \]
+\end{solution}

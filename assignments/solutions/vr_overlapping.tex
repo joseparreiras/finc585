@@ -1,0 +1,18 @@
+\begin{solution}
+    This exercise corresponds to the Proof of Theorem 2 in \citet{lo1988stock} (p.p. 62-64).
+    Since we can express the VR statistic as a sum of the correlations we can use the Delta Method to derive its asymptotic distribution. Letting
+    \begin{align*}
+        \grad \wh{VR}\of{q} & \coloneqq 2 \bp{\pd{\wh{VR}\of{q}}{\rho_q}, \dots, \pd{\wh{VR}\of{q}}{\rho_{q-1}}} \\
+        & = 2\bp{1-\frac{1}{q}, 1-\frac{2}{q}, \dots, 1-\frac{q-1}{q}}
+    \end{align*}
+    Therefore the asymptotic variance of the VR statistic can be derived as:
+    \begin{align*}
+        \Omega & \coloneqq \grad\wh{VR}\of{q} I_{(q-1)\times (q-1)}\grad\wh{VR}\of{q}^\intercal \\
+        & = 4\sum_{k=1}^{q-1} \bp{1-\frac{k}{q}}^2 \\
+        & = \frac{2(q-1)(2q-1)}{3q}
+    \end{align*}
+    So we can infer that the asymptotic distribution of \(\wh{VR}\of{q}\) is given by:
+    \[
+        \sqrt{nq}\bp{\widehat{VR}(q)-1} \dto N\bp{0, \frac{2(q-1)(2q-1)}{3q}}
+    \]
+\end{solution}

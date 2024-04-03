@@ -1,0 +1,117 @@
+\begin{solution}
+    Consider the one period Kyle model from the Market Microstructure Notes. In this model there is only one asset, informed and noise traders submit size orders to a market maker who sets the prices. The terminal value of the asset, denoted by \(V\) is known by informed traders, this value follows a normal distribution with mean \(\mu_0\) and variance \(\sigma_0^2\). 
+    \[
+        V \sim N\bp{0, \sigma_0^2}
+    \]
+    Independently from that, noise traders submit orders of size \(Z\), which is also normally distributed with mean 0 and variance \(\sigma_Z^2\).
+    \[
+        Z \sim N\bp{0, \sigma_Z^2}
+    \]
+    We look for a linear equilibrium defined below
+
+    \begin{definition*}[Linear Equilibrium]
+    A linear equilibrium is defined as a tuple \(\bp{P, X}\) such that
+    \begin{enumerate}
+        \item The market maker's price is a linear function of the total order flow \(X + Z\), i.e., for some \(\mu^\star, \lambda^\star \in \R\):
+        \[
+            P = \mu^\star + \lambda^\star (X + Z)
+        \]
+        \item The informed trader's demand is a linear function of the value of the asset, i.e., for some \(\alpha^\star, \beta^\star \in \R\):
+        \[
+            X = \alpha^\star + \beta^\star V
+        \]
+        \item The informed trader's demand satisfies profit maximization;
+        \item The market maker strategy satisfies both conditional zero profit condition (CZPC):
+        \begin{equation}
+            \label{eq:czpc}
+            \tag{CZPC}
+            P = \E{V \vert X+Z}
+        \end{equation}
+    \end{enumerate}
+    \end{definition*}
+
+    We start by deriving the informed trader demand. Knowing the terminal value \(V\), the informed trader's profit condition is a random variable given by 
+    \[
+        \Pi = X\bp{V - P}
+    \]
+    Under common knowledge of rationality, the informed trader considers that the market maker will set a linear price function, so we can write that
+    \[
+        \Pi = X\bp{V - \mu - \lambda (X + Z)}
+    \]
+    for some \(\mu, \lambda \in \R\). The optimality condition for the informed trader than is given by
+    \begin{equation}
+        \label{eq:it_optimality}
+        \tag{IT Optimality}
+        \max_X \E{\Pi \vert X, V} 
+    \end{equation}
+    using the formula for \(\Pi\) and \(X\) and considering that \(V\) is known to the insider, this can be rewritten as
+    \begin{align*}
+        \E{\Pi \vert X, V} & = \E{X\bp{V - \mu - \lambda (X + Z)} \vert X, V} \\
+        & = XV - \bp{\mu + \lambda X}X - \lambda X \E{Z} \\
+        & = XV - \bp{\mu + \lambda X}X
+    \end{align*}
+    Taking the first order condition w.r.t X we get:
+    \begin{align*}
+        \label{eq:it_foc}
+        \tag{FOC}
+        V-\mu - 2\lambda X & = 0 \\
+        X & = -\frac{\mu}{2\lambda} + \frac{V}{2\lambda}
+    \end{align*}
+    Which is a linear solution for the informed trader's demand with \(\alpha = -\frac{\mu}{2\lambda}\) and \(\beta = \frac{1}{2\lambda}\) as a function of the market maker's price function.
+
+    Next we derive the market maker's rule. On equilibrium, the market maker knows the solution to the informed trader's problem and sets the price function accordingly. From the conditional zero profit condition (CZPC), we can derive the unconditional zero profit condition (UZPC):
+    \begin{align*}
+        \tag{UZPC}
+        \E{P} & = \E{V} \\
+        \E{\mu + \lambda(X+Z)} & = \mu_0 \\ 
+        \mu + \lambda\E\bs{-\frac{\mu}{2\lambda} + \frac{V}{2\lambda} + Z} & = \mu_0 \\
+        \mu - \frac{\mu}{2} + \frac{\mu_0}{2} & = \mu_0 \\
+        \mu & = \mu_0
+    \end{align*}
+    Plugging it back to the formula of \(X\) we get that
+    \begin{align*}
+        X = -\frac{\mu_0}{2\lambda} + \frac{V}{2\lambda}
+    \end{align*}
+    Now observe that, since \(V\), the terminal value, is normally distributed, this implies that \(X\) itself is also normally distributed with mean
+    \[
+        \E{X} = -\frac{\mu_0}{2\lambda} + \frac{\mu_0}{2\lambda} = 0
+    \]
+    and variance
+    \[
+        \var{X} = \frac{\sigma_0^2}{4\lambda^2}
+    \]
+    Moreover, since \(V\) and \(Z\) are independent, this implies that \(X\) and \(Z\) are jointly normal distributed, which, in turn, implies that \(X+Z\) is also normal. Using the formula for \(X\) and the UZPC we can than write that
+    \[
+        X + Z \sim N\bp{0, \frac{\sigma_0^2}{4\lambda^2} + \sigma_Z^2}
+    \]
+    Finally, \(X+Z\) and \(V\) are jointly normal, so making the projection of \(V\) onto \(X+Z\) allow us to derive the conditional expectation for the CZPC:
+    \begin{align*}
+        \E\bs{V \vert X+Z} & = \E{V} + \frac{\cov{V, X+Z}}{\var{X+Z}}\bs{(X+Z)-\E{X+Z}}\\ 
+        & = \mu_0 + \frac{\frac{\sigma_0^2}{2\lambda}}{ \frac{\sigma_0^2}{4\lambda^2} + \sigma_Z^2}(X+Z) \\
+    \end{align*}
+    Equating this to \(P\) from CZPC gives us the final price function:
+    \begin{equation}
+        \tag{Price Function}
+        \label{eq:price_function}
+        P = \mu_0 + \frac{2\lambda\sigma_0}{\sigma_0^2 + 4\lambda^2\sigma_Z^2}(X+Z)
+    \end{equation}
+    So we implicitly derived that
+    \begin{align*}
+        \lambda & = \frac{2\lambda}{2\sigma_0^2 + 4\lambda^2\sigma_Z^2} \\
+        4\lambda^3 \sigma_Z^2 + \lambda \sigma_0^2 & = 2\lambda \sigma_0^2 \\
+        4\lambda^2 \sigma_Z^2 & = \sigma_0^2 \\ 
+        \lambda & = \frac{\sigma_0}{2\sigma_Z} \\
+    \end{align*}
+    Plugging this back to the insider's demand function gives
+    \[
+        \beta = \frac{1}{2\lambda} = \frac{\sigma_Z}{\sigma_0}
+    \]
+    Which completes the characterization of the equilibrium in our model with the price and demand functions given by
+    \begin{equation}
+        \tag{Eq.}
+        \begin{aligned}
+            X & = -\mu_0\frac{\sigma_Z}{\sigma_0} + \frac{\sigma_Z}{\sigma_0}V \\
+            P & = \mu_0 + \frac{\sigma_0}{2\sigma_Z}(X+Z)
+        \end{aligned}
+    \end{equation}
+\end{solution}

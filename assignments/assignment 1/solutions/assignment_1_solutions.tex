@@ -1,232 +1,77 @@
 \documentclass[12pt,twoside]{article}
 
 %%%%%%% Loading packages and macros %%%%%%%
-\usepackage{preamble/__packages__}
-\usepackage{preamble/__macro__}
+\usepackage{../../preamble/__packages__}
+\usepackage{../../preamble/__math__}
+\usepackage{../../preamble/__theme__}
+
+\graphicspath{{../../../images/}} % Sets the images folder as path
+
+% Add watermark
+% \SetWatermarkText{\textsf{NOT TO BE SHARED}}
+\SetWatermarkText{}
+\SetWatermarkAngle{45}
+\SetWatermarkScale{3.5}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%% Document %%%%%%%
-\newcommand{\assignment}{ Assignment 1 }
+\newcommand{\assignment}{Assignment 1}
 \newcommand{\course}{FINC 585-3: Asset Pricing}
-\newcommand{\prof}{Torben Andersen}
+\newcommand{\prof}{Torben Andersen \& Zhengyang Jiang}
 \newcommand{\institute}{Kellogg School of Management}
 
 \title{\course-\assignment}
 \author{TA: Jose Antunes-Neto}
 \date{April 11, 2023}
+
 %%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
 \maketitle
 
-The objective of this assignment is to gain familiarity with basic properties of univariate equityindex return series and some standard test statistics gauging the existence of return dependence. Both the daily S\&P 500 and CRSP return series are available under data on the Canvas site.
+The objective of this assignment is to gain familiarity with basic properties of univariate equityindex return series and some standard test statistics gauging the existence of return dependence. Both the daily S\&P 500 and CRSP return series are available under \texttt{data/} on the Canvas site.
 
-\section{Problem 1.}
-Provide a sketch of a proof for the Hausman Principle, given on page 11.
-\begin{prop*} Consider the following estimators:
-    \begin{itemize}
-        \item $\hat\sigma_a^2$ is Efficient (MLE) Estimator under the Null Hypothesis, i.e, it has Smallest Asymptotic Variance amongst consistent estimators
-        \item $\hat\sigma_b^2$ is Consistent, albeit NOT Efficient Estimator under the Null
-    \end{itemize}
-    \begin{center}
-        \textbf{Hausman Principle:} $\C{\hat\sigma_a^2}{\hat\sigma_b^2} = \V{\hat\sigma_a^2}$
-    \end{center}
-\end{prop*}
-\begin{solution}
-    Let \(\hat\mu\) and \(\tilde\mu\) be two consistent estimators of a parameter \(\mu\) in the real line. Assume that 
-    \[
-        \Prob{\hat\mu \neq \tilde\mu} > 0
-    \]
-    (so they are not the same) and that \(\hat\mu\) is efficient (i.e., it has the smallest variance). Fix \(\lambda \in [0,1]\) and let \(\tilde\mu(\lambda)\) be a convex combination between these two estimators:
-    \[
-        \bar\mu(\lambda) = \lambda \hat\mu + (1-\lambda) \tilde\mu
-    \]
-    By definition it is also consistent and its variance is given by:
-    \[
-        \V{\bar\mu(\lambda)} = \lambda^2 \V{\hat\mu} + (1-\lambda)^2 \V{\tilde\mu} + 2\lambda(1-\lambda)\C{\hat\mu}{\tilde\mu}
-    \]  
-    Lets find the value of \(\lambda\) that minimizes the variance of \(\bar\mu(\lambda)\). The first order condition of the minimization of the equation above is:
-    \[
-        \frac{\partial \V{\bar\mu}}{\partial \lambda}(\lambda) = 2\lambda \V{\hat\mu} - 2(1-\lambda) \V{\tilde\mu} + 2(1-2\lambda)\C{\hat\mu}{ \tilde\mu} = 0
-    \]
-    And the second order condition is:
-    \[
-        \frac{\partial^2 \V{\bar\mu}}{\partial \lambda^2}(\lambda) = 2 \V{\hat\mu} - 2 \V{\tilde\mu} + - 4\C{\hat\mu}{\tilde\mu} = 2\V{\hat\mu-\tilde\mu}> 0
-    \]
-    where the strictly positivity follows from the fact that \(\hat\mu\) and \(\tilde\mu\) are not the same estimate. \\
-    These two conditions characteris a global minimizer \(\lambda^\ast\) of the variance of \(\bar\mu(\lambda)\). Since \(\hat\mu\) is efficient, it must be the case that \(\lambda^\ast = 1\). Therefore, from the FOC:
-    \[
-        \frac{\partial \V{\bar\mu}}{\partial \lambda}(1) = 2\V{\hat\mu} - 2\C{\hat\mu}{ \tilde\mu} = 0
-    \]
-    Therefore we get that:
-    \[
-        \V{\hat\mu} = \C{\hat\mu}{\tilde\mu}
-    \]
-\end{solution}
+\problem
+\input{../../problems/hausman_principle.tex}
+\input{../../solutions/hausman_principle.tex}
+\clearpage 
 
-\newpage 
+\problem
+\input{../../problems/vd_statistic.tex}
+\input{../../solutions/vd_statistic.tex}
+\clearpage
 
-\section{Problem 2.}
-Derive the asymptotic distribution for the VD statistic in page 12. \\\\
-\textbf{VD Statistic:}
-$$VD = \hat\sigma_a^2 - \hat\sigma_b^2$$ 
-\begin{solution}
-    Recall from the lecture notes that the Variance Difference (VD) statistic is defined as:
-    \[
-        VD(q) = \hat\sigma_a^2-\hat\sigma_b^2
-    \]
-    Also, recall that the asymptotic distribution of the estimators is given by:
-    \[
-        \sqrt{nq}\begin{pmatrix}\hat\sigma_a^2-\sigma^2 \\ \hat\sigma_b^2- \sigma^2\end{pmatrix} \sim N\left(0, \begin{pmatrix} 2\sigma^4 & 2\sigma^4 \\ 2\sigma^4 & 2q\sigma^4 \end{pmatrix}\right)  
-    \]
-    Using the Delta Method we have that:
-    \[
-        \sqrt{nq}VD(q) \dconv \nabla VD\rvert_{\sigma^2, \sigma^2} N\left(0, \begin{pmatrix} 2\sigma^4 & 2\sigma^4 \\ 2\sigma^4 & 2q\sigma^4 \end{pmatrix}\right)  
-    \]
-    Taking the derivatives of VD w.r.t \(\hat\sigma_a^2\) and \(\hat\sigma_b^2\) we get:
-    \[
-        \nabla VD = \begin{pmatrix}
-            1 & -1
-        \end{pmatrix}
-    \]
-    Therefore the the asymptotic variance of VD is:
-    \[
-        \begin{pmatrix}1 & -1\end{pmatrix}\begin{pmatrix} 2\sigma^4 & 2\sigma^4 \\ 2\sigma^4 & 2q\sigma^4 \end{pmatrix}\begin{pmatrix}1 \\ -1\end{pmatrix} = 2\sigma^4(q-1)
-    \]
-\end{solution}
+\problem
+\input{../../problems/vr_overlapping.tex}
+\input{../../solutions/vr_overlapping.tex}
+\clearpage
 
-\newpage
+\problem
+\input{../../problems/hong_linton_zhang.tex}
+\input{../../solutions/hong_linton_zhang.tex}
+\clearpage
 
-\section{Problem 3.}
-Do the exercise on page 13 (on the VR statistic with overlapping returns). Hint: If it seems tricky, you can check the literature for inspiration. \\
+\problem
+\input{../../problems/spearman_test.tex}
+\input{../../solutions/spearman_test.tex}
+\clearpage
 
-\textbf{Exercise: (Overlapping returns)} \\
+\problem
+\input{../../problems/lo_mackinley_crsp.tex}
+\input{../../solutions/lo_mackinley_crsp.tex}
+\clearpage
 
-Under the Null Hypothesis,
+\problem 
+\input{../../problems/roll_model.tex}
+\input{../../solutions/roll_model.tex}
+\clearpage
 
-\[
-    \sqrt{nq}\left(\hat\rho_1, \dots, \hat\rho_{q-1}\right) \dconv N(0,I_{(q-1)\times (q-1)})
-\]
-We also saw,
-\[
-    \widehat{VR}(q) = 1+2\sum_{k=1}^{(q-1)} \left(1-\frac{k}{q}\right)\hat\rho_k
-\]
-Use the Delta method to show that, if we use overlapping returns to estimate the higher order return auto-covariances then,
-\[
-    \sqrt{nq}\left(\widehat{VR}(q)-1\right) \dconv N\left(0,\frac{2(q-1)(2q-1)}{3q}\right)
-\]
-\begin{solution}
-    This exercise corresponds to the Proof of Theorem 2 in \citet{lo1988stock} (p.p. 62-64).
-    Since we can express the VR statistic as a sum of the correlations we can use the Delta Method to derive its asymptotic distribution. Letting
-    \begin{align*}
-        \nabla \widehat{VR}(q) & \coloneqq 2\left(\frac{\partial\widehat{VR}(q)}{\partial \rho_1}, \dots, \frac{\partial\widehat{VR}(q)}{\partial \rho_{q-1}} \right) \\
-        & = 2\left(1-\frac{1}{q}, 1-\frac{2}{q}, \dots, 1-\frac{q-1}{q}\right)
-    \end{align*}
-    Therefore the asymptotic variance of the VR statistic can be derived as:
-    \begin{align*}
-        \Omega & \coloneqq \nabla\widehat{VR}(q) I_{(q-1)\times (q-1)}\nabla\widehat{VR}(q)^\intercal \\
-        & = 4\sum_{k=1}^{q-1} \left(1-\frac{k}{q}\right)^2 \\
-        & = \frac{2(q-1)(2q-1)}{3q}
-    \end{align*}
-    So we can infer that the asymptotic distribution of \(\widehat{VR}(q)\) is given by:
-    \[
-        \sqrt{nq}\left(\widehat{VR}(q)-1\right) \dconv N\left(0, \frac{2(q-1)(2q-1)}{3q}\right)
-    \]
-\end{solution}
+\problem
+\input{../../problems/kyle_model.tex}
+\input{../../solutions/kyle_model.tex}
+\clearpage
 
-\newpage
-
-\section{Problem 4.}
-
-\citet{hong2017investigation} (HLZ) provide a correction and extension to the
-Variance Ratio statistic explored by \citet{lo1988stock} (no formal proofs needed below).
-\begin{enumerate}[label = \alph*)]
-    \item Identify the changes in assumptions they introduce relative to Lo \& MacKinlay.
-    \begin{solution}
-        Let \(X_t\) be the series of the returns and \(\tilde X_t \coloneqq X_t - \E{X_t}\). \citet{hong2017investigation} note that the assumption that \(\tilde X_{t}\tilde X_{t-j}\) and \(\tilde X_{s}\tilde X_{s-j}\) are uncorrelated is missing in the original work of \citet{lo1988stock}. According to them, this assumption does not follow from the assumption that \(X_t\) is an uncorrelated sequence. In other words, this means that there is no ``correlation between correlations'' of the returns. This is necessary for the analysis of the asymptotic distribution of the Variance Ratio test as the fourth moments appear in the derivation of the asymptotic variance. \\
-        This assumption is contained in the Assumption MH\textsuperscript{*} of \citet{hong2017investigation} p.p. 184 as:
-        \begin{itemize}
-            \item[MH1.] (i) For all \(t\) \(\tilde X_t\) satisfies \(\E{\tilde X_t} = 0\), \(\E{\tilde X_t \tilde X_{t-j}^\intercal} = 0\) for all \(j \neq 0\); (ii) for all \(t,s\) which \(s\neq t\) and all \(j,k = 1, \dots, K\) \(\E{\tilde X_t \tilde X_{t-j}^\intercal \otimes \tilde X_s \tilde X_{s-k}^\intercal} = 0\).
-        \end{itemize}
-    \end{solution}
-    \item What are the advantages of their proposed new assumptions?
-    \begin{solution}
-        The assumptions on HLZ are weaker than the ones in LM. Moreover, they show that the assymptions in LM are not necessary to guarantee the correct asymptotic distribution of the autocorrelation estimates. 
-    \end{solution}
-    \item State the limiting distribution result for the univariate VR statistic in their paper.
-    \begin{solution}
-        According to Theorem 1. of HLZ (p.p. 185), the limiting distribution of the (here simplified to univariate) Variance Ratio statistic is given by:
-        \[
-            \sqrt{T}\left(\widehat{VR}(q)-1\right) \dconv N\left(0, \Omega(q)\right)
-        \]
-        with
-        \[
-            \Omega(q) \coloneqq 4\sum_{j=1}^{q-1}\sum_{k=1}^{q-1}\left(1-\frac{j}{q}\right)\left(1-\frac{k}{q}\right) \frac{\Xi_{k,j}}{\sigma^4}
-        \]
-        where \(\Xi_{k,j}\coloneqq \lim_{T\to\infty}\frac{1}{T}\sum_{t=1}^{T}\E{\tilde X_{t}\tilde X_{t-j}\tilde X_{t-k}\tilde X_{t-j-k}}\).
-    \end{solution}
-\end{enumerate}
-
-\newpage
-
-\section{Problem 5.}
-Apply the Spearman Corerlation Test on page 4 of the notes to explore dependences for the daily S\&P 500 index returns.
-
-\begin{enumerate}[label = \alph*)]
-    \item First, do the test as suggested for January 1991-December 2006 period
-    \item Second, do the same test for the sample period 2007-2022
-    \item Repeat the above, but using the absolute returns in lieu of the returns 
-\end{enumerate}
-
-\begin{solution}
-    I have calculated the results for the Spearman Rank Correlation Test for the samples using the Value and Equal Weighted S\&P 500. The results are shown in Table~\ref{tab:value_table} and Table~\ref{tab:equal_table}, respectively. As we can see, there is evidence pointing for the presence of autocorrelation for the Equal Weighted returns for the whole sample. The Value Weighted returns, however, fail to present any autocorrelation in the first part of the sample. Therefore we may conclude that the autocorrelation may be driven by the small cap stocks which receive more weight on the equal weighted portfolio. For the absolute returns, the results show that there is significant autocorrelation for the whole sample for both portfolios. This is in lign with the literature of volatility clustering. \\
-    \input{tables/value_table.tex}
-    \input{tables/equal_table.tex}
-\end{solution}
-
-\newpage
-
-\section{Problem 6.}
-
-Implement the \citet{lo1988stock} ratio test for the CRSP value-weighted and equal-weighted indices over their sample period, and for the periods 1991-2006 and 2007-2022. Try to assess significance according to the Lo \& Mackinlay and HLZ robust limiting distributions.
-
-\begin{solution}
-    I calculated the Variance Ratio statistic using up to 20 lags for both the value and the equal-weighted indices for the periods required and the results are shown on Figures~\ref{fig:vrtest_value_9106}-\ref{fig:vrtest_equal_0722}. \\
-    Recall that the VR statistic can be written as a positive linear combination of the autocorrelation coefficients:
-    \[
-        VR(q) \approx 1 + 2\sum_{k=1}^{q-1} \left(1-\frac{k}{q}\right) \rho_k
-    \]
-    Therefore we may interpret the direction of the autocorrelation (specially on \(q=2\) as the sign of the coefficient. \\
-    For the value weighted portfolio, there is evidence pointing to the existence of \textbf{negative} autocorrelation for the sample of 2007-2022 only. The results are significant up until \(q = 11\) when using the HLZ std. dev. and \(q=8\) when using the LM std. dev. as seen on Figure~\ref{fig:vrtest_value_0722}. For the sample of 1991-2006, there is no evidence of autocorrelation. \\
-    The results are different for the equal-weighted portfolio. As we can see in Figures~\ref{fig:vrtest_equal_9106} and \ref{fig:vrtest_equal_0722}, the period between 1991 and 2006 shows strong signs of positive autocorrelation. The results are significant for the 20 values of \(q\) that were tested and the Variance Ratio statistic is always increasing, indicating that each one of the autocorrelations may be positive. For the sample of 2007-2022, the results are not significant for any of the values of \(q\) tested. All these results are consistent with either the HLZ or the LM std. deviations.\\
-    \begin{figure}[!htbp]
-        \centering
-        \caption{Variance Ratio Test for the Value Weighted Index for 1991-2006}
-        \label{fig:vrtest_value_9106}
-        \includegraphics[width=1\textwidth]{images/vrtest_value_9106.png}
-    \end{figure}
-    \begin{figure}[!htbp]
-        \centering
-        \caption{Variance Ratio Test for the Value Weighted Index for 2007-2022}
-        \label{fig:vrtest_value_0722}
-        \includegraphics[width=1\textwidth]{images/vrtest_value_0722.png}
-    \end{figure}
-    \begin{figure}[!htbp]
-        \centering
-        \caption{Variance Ratio Test for the Equal Weighted Index for 1991-2006}
-        \label{fig:vrtest_equal_9106}
-        \includegraphics[width=1\textwidth]{images/vrtest_equal_9106.png}
-    \end{figure}
-    \begin{figure}[!htbp]
-        \centering
-        \caption{Variance Ratio Test for the Equal Weighted Index for 2007-2022}
-        \label{fig:vrtest_equal_0722}
-        \includegraphics[width=1\textwidth]{images/vrtest_equal_0722.png}
-    \end{figure}
-\end{solution} 
-
-\newpage
-$ $\clearpage
-\bibliography{__references__}
+\bibliography{../../preamble/__references__}
 \bibliographystyle{abbrvnat}
 \end{document}

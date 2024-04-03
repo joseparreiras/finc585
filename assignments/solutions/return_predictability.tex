@@ -1,0 +1,6 @@
+\begin{solution}
+    The results are presented in Tables~\ref{tab:value_reg} and \ref{tab:equal_reg}. The first table presents the results for the regressions for the Value Weighted Index, while the second table presents the results for the Equal Weighted Index. The numbers in parenthesis correspond to the t-statistics using homoskedastic standard errors. The numbers in brackets, using White heteroskedastic std. errors. Finally, the numbers in curly brackets show the t-statistics using the Newey-West standard errors. As we can see, there is not much predictability in the returns when it comes to these factors. Both the Price-to-Earnings and the Dividend-to-Price ratios are not statistically significant in columns (a), (b) and (d) in both tables. The Relative Interest Rate (RREL) is significant at 5\% under all std. errors but the \(R^2\) it is able to generate is really low (usually around 0.9\%). \par
+    Comparing the t-statistics from the tables we also conclude that the method to estimate the standard errors increases as we add more robustness (Homoskedastic \(\rightarrow\) White \(\rightarrow\) HAC). However, for every variable in our model, this change in the standard errors is not enought to change the significance of the coefficients. \par
+    \input{tables/value_reg.tex}
+    \input{tables/equal_reg.tex}
+\end{solution}

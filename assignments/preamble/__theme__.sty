@@ -13,10 +13,11 @@
 % Title %
 \makeatletter
 \renewcommand{\maketitle}{\noindent\textnormal{\institute}\hfill\\[0.01in]
-\textnormal{\course }\hfill{Prof. \prof}\\[0.01in]
-\textnormal{\assignment}\hfill{\@date}\\[0.01in]
-\@author\hfill{}\\[0.01in]
-\smallskip\hrule\bigskip
+\textnormal{\course }\hfill{Prof: \prof}\\[0.01in]
+\textnormal{\@date}\hfill\textnormal{\@author}\\[0.01in]
+\begin{center}
+  \Large \textbf{\assignment}
+\end{center}
 \thispagestyle{plain}}
 
 % Footnotes %
@@ -27,7 +28,7 @@
 \fancyhf{}  
 \pagestyle{fancy}
 \lhead{\small\textit{\institute}}
-\rhead{\small\textit{\assignment}}
+\rhead{\small\textit{\@title}}
 \cfoot{\thepage}
 
 % First page style only
@@ -48,6 +49,19 @@
 \subsectionfont{\normalfont}		% SET SUBSECTION FONT
 \setlength{\parindent}{24pt}		% SETUP INDENTATION
 \makeatother
+
+% Add a Problem section with counter
+\newcounter{problem}
+\newcommand{\problem}[1][]{
+  % Increment the problem counter
+  \stepcounter{problem}
+  % Create a new section with the current problem number and optional title
+  \ifx\relax#1\relax  % Check if the optional argument is provided
+    \section*{Problem \theproblem.}
+  \else
+    \section*{Problem \theproblem - #1}
+  \fi
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -73,53 +87,6 @@
   pdfborder={0 0 0}
 }
 
-\SetWatermarkText{\textsf{NOT TO BE SHARED}}
-\SetWatermarkAngle{45}
-\SetWatermarkScale{3.5}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Math Symbols %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Basic Math Symbols %
-\newcommand{\E}[1]{\mathbb{E}\left(#1\right)}
-\newcommand{\V}[1]{\mathbb{V}\left(#1\right)}
-\newcommand{\C}[2]{\mathbb{C}\left( #1, #2 \right)}
-\newcommand{\N}{\mathbb{N}}
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\Q}{\mathbb{Q}}
-\newcommand{\Z}{\mathbb{Z}}
-\newcommand{\simplex}{\bigtriangleup}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
-\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
-
-% Statistical %
-\newcommand{\pconv}{\overset{p}{\rightarrow}}
-\newcommand{\dconv}{\overset{d}{\rightarrow}}
-\newcommand{\lpconv}[1]{\overset{\mathcal{L}^#1}{\rightarrow}}
-\newcommand{\asconv}{\overset{a.s}{\rightarrow}}
-\newcommand{\conv}{\rightarrow}
-\newcommand{\Prob}[1]{\mathbb{P}\left\lbrace #1 \right\rbrace}
-\DeclarePairedDelimiter{\ind}{ \mathbbm{1}\lbrace }{\rbrace}
-
-% Theorems %
-\newtheorem*{claim}{\textnormal{Claim}}
-\newtheorem{prop}{Proposition}
-\newtheorem*{prop*}{Proposition}
-\newenvironment{solution}{\begingroup \color{nu purple} \begin{proof}[\bfseries Solution] $ $\newline $ $\newline}{\end{proof} \endgroup}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Drawing %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Nodes %
-\tikzstyle{hollow node}=[circle, draw, inner sep=1.5]
-\tikzstyle{solid node}=[circle, draw, fill=black, inner sep=1.5]
-
-% Draw %
-\tikzstyle{information set}=[dashed, bend right]
-\tikzstyle{continuous}=[bend right]
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PDF Metadata %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -136,5 +103,17 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TikZ Symbols %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usetikzlibrary{arrows.meta, arrows,decorations.pathreplacing,calligraphy}
+% Nodes %
+\tikzstyle{hollow node}=[circle, draw, inner sep=1.5]
+\tikzstyle{solid node}=[circle, draw, fill=black, inner sep=1.5]
+
+% Draw %
+\tikzstyle{information set}=[dashed, bend right]
+\tikzstyle{continuous}=[bend right]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % S[round-mode=places, round-precision=1, table-format= -1.1,table-space-text-post={~]}]<{{~]}}

@@ -1,0 +1,31 @@
+\begin{solution}
+    Let \(\wh\mu\) and \(\wt\mu\) be two consistent estimators of a parameter \(\mu\) in the real line. Assume that 
+    \[
+        \prob\bc{\wh\mu \neq \wt\mu} > 0
+    \]
+    (so they are not the same) and that \(\wh\mu\) is efficient (i.e., it has the smallest variance). Fix \(\lambda \in [0,1]\) and let \(\wt\mu(\lambda)\) be a convex combination between these two estimators:
+    \[
+        \bar\mu(\lambda) = \lambda \wh\mu + (1-\lambda) \wt\mu
+    \]
+    By definition it is also consistent and its variance is given by:
+    \[
+        \var{\bar\mu(\lambda)} = \lambda^2 \var{\wh\mu} + (1-\lambda)^2 \var{\wt\mu} + 2\lambda(1-\lambda)\cov{\wh\mu, \wt\mu}
+    \]  
+    Lets find the value of \(\lambda\) that minimizes the variance of \(\bar\mu(\lambda)\). The first order condition of the minimization of the equation above is:
+    \[
+        \frac{\partial \var{\bar\mu}}{\partial \lambda}(\lambda) = 2\lambda \var{\wh\mu} - 2(1-\lambda) \var{\wt\mu} + 2(1-2\lambda)\cov{\wh\mu, \wt\mu} = 0
+    \]
+    And the second order condition is:
+    \[
+        \frac{\partial^2 \var{\bar\mu}}{\partial \lambda^2}(\lambda) = 2 \var{\wh\mu} - 2 \var{\wt\mu} + - 4\cov{\wh\mu, \wt\mu} = 2\var{\wh\mu-\wt\mu}> 0
+    \]
+    where the strictly positivity follows from the fact that \(\wh\mu\) and \(\wt\mu\) are not the same estimate. \\
+    These two conditions characteris a global minimizer \(\lambda^\ast\) of the variance of \(\bar\mu(\lambda)\). Since \(\wh\mu\) is efficient, it must be the case that \(\lambda^\ast = 1\). Therefore, from the FOC:
+    \[
+        \frac{\partial \var{\bar\mu}}{\partial \lambda}(1) = 2\var{\wh\mu} - 2\cov{\wh\mu, \wt\mu} = 0
+    \]
+    Therefore we get that:
+    \[
+        \var{\wh\mu} = \cov{\wh\mu, \wt\mu}
+    \]
+\end{solution}

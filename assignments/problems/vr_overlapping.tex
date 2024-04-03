@@ -1,0 +1,17 @@
+Do the exercise on page 13 (on the VR statistic with overlapping returns). Hint: If it seems tricky, you can check the literature for inspiration. \\
+
+\textbf{Exercise: (Overlapping returns)} \\
+
+Under the Null Hypothesis,
+
+\[
+    \sqrt{nq}\bp{\wh\rho_1, \dots, \wh\rho_{q-1}} \dto N\bp{0,I_{(q-1)\times (q-1)}}
+\]
+We also saw,
+\[
+    \wh{VR}\of{q} = 1+2\sum_{k=1}^{(q-1)} \bp{1-\frac{k}{q}}\wh\rho_k
+\]
+Use the Delta method to show that, if we use overlapping returns to estimate the higher order return auto-covariances then,
+\[
+    \sqrt{nq}\bp{\wh{VR}\of{q}-1} \dto N\bp{0,\frac{2(q-1)(2q-1)}{3q}}
+\]

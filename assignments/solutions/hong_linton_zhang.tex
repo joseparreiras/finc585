@@ -1,0 +1,21 @@
+\begin{solution}
+    \begin{enumerate}[label = \alph*)]
+        \item Let \(X_t\) be the series of the returns and \(\wt X_t \coloneqq X_t - \E{X_t}\). \citet{hong2017investigation} note that the assumption that \(\wt X_{t}\wt X_{t-j}\) and \(\wt X_{s}\wt X_{s-j}\) are uncorrelated is missing in the original work of \citet{lo1988stock}. According to them, this assumption does not follow from the assumption that \(X_t\) is an uncorrelated sequence. In other words, this means that there is no ``correlation between correlations'' of the returns. This is necessary for the analysis of the asymptotic distribution of the Variance Ratio test as the fourth moments appear in the derivation of the asymptotic variance. \\
+        This assumption is contained in the Assumption MH\textsuperscript{*} of \citet{hong2017investigation} p.p. 184 as:
+        \begin{itemize}
+            \item[MH1.] (i) For all \(t\) \(\wt X_t\) satisfies \(\E{\wt X_t} = 0\), \(\E{\wt X_t \wt X_{t-j}^\intercal} = 0\) for all \(j \neq 0\); (ii) for all \(t,s\) which \(s\neq t\) and all \(j,k = 1, \dots, K\) \(\E{\wt X_t \wt X_{t-j}^\intercal \otimes \wt X_s \wt X_{s-k}^\intercal} = 0\).
+        \end{itemize}
+
+        \item The assumptions on HLZ are weaker than the ones in LM. Moreover, they show that the assymptions in LM are not necessary to guarantee the correct asymptotic distribution of the autocorrelation estimates. 
+        
+        \item According to Theorem 1. of HLZ (p.p. 185), the limiting distribution of the (here simplified to univariate) Variance Ratio statistic is given by:
+        \[
+            \sqrt{T}\bp{\wh{VR}\of{q}-1} \dto N\bp{0, \Omega\of{q}}
+        \]
+        with
+        \[
+            \Omega\of{q} \coloneqq 4\sum_{j=1}^{q-1}\sum_{k=1}^{q-1}\bp{1-\frac{j}{q}}\bp{1-\frac{k}{q}} \frac{\Xi_{k,j}}{\sigma^4}
+        \]
+        where \(\Xi_{k,j} \coloneqq \lim_{T\to\infty}\frac{1}{T}\sum_{t=1}^{T}\E{\wt X_{t}\wt X_{t-j}\wt X_{t-k}\wt X_{t-j-k}}\).
+    \end{enumerate}
+\end{solution}
