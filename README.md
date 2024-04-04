@@ -33,7 +33,7 @@ More information can be found in the [CRSP website](https://www.crsp.org/product
 
 ## Small Cap Daily Index
 
-The file [smallcap_daily.csv](data/smallcap_daily.csv) contains the return series of the bottom 30% of CRSP firms listed on NYSE, AMEX or NASDAQ, ordered by size. Returns are calculated as a percentage change in the closing price of the index and are displayed at the percentage level. Data was obtained from [Kenneth French's website](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html) by downloading the [Portfolios Formed on Size Daily] [csv file](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Portfolios_Formed_on_ME_CSV.zip). Data is available from 1926-07-01 to 2024-01-31. The file contains the following variables:
+The file [smallcap_daily.csv](data/smallcap_daily.csv) contains the return series of the bottom 30% of CRSP firms listed on NYSE, AMEX or NASDAQ, ordered by size. Returns are calculated as a percentage change in the closing price of the index and are displayed at the percentage level. Data was obtained from [Kenneth French's website](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html) by downloading the Portfolios Formed on Size Daily [csv file](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Portfolios_Formed_on_ME_CSV.zip). Data is available from 1926-07-01 to 2024-01-31. The file contains the following variables:
 
 | Variable | Type   | Description                                                  |
 | :------- | :----- | :----------------------------------------------------------- |
