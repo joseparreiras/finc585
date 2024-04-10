@@ -97,7 +97,7 @@ equal_table = pd.DataFrame(
 
 # Export tables to LaTeX
 value_table.to_latex(
-    '../tables/value_table.tex',
+    '../tables/spearman_value.tex',
     float_format='%.3f',
     caption='Spearman Rank Correlation Test for Value Weighted S\&P 500 Returns',
     label='tab:value_table',
@@ -107,7 +107,7 @@ value_table.to_latex(
 )
 
 equal_table.to_latex(
-    '../tables/equal_table.tex',
+    '../tables/spearman_equal.tex',
     float_format='%.3f',
     caption='Spearman Rank Correlation Test for Equal Weighted S\&P 500 Returns',
     label='tab:equal_table',
