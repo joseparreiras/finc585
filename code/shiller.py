@@ -17,14 +17,12 @@ from stargazer import Stargazer
 This problem assess the predictability of returns using macro-finance variables. We will use S&P 500 excess returns as the market indicator and the set of macro-finance variables from Shiller (2000) as the set of predictors. 
 """
 
-data_path = '/Users/joseparreiras/Library/CloudStorage/Dropbox/Documents/Kellogg/2023 - Spring/FINC 585-3 - Asset Pricing/Data/'
-
 start = '1963-01-01'
 end = '2022-12-31'
 
 # Data
 # S&P 500 daily returns
-sp500 = pd.read_csv(data_path + 'SP500_daily.csv',
+sp500 = pd.read_csv('../data/SP500_daily.csv',
                     index_col=0, parse_dates=True)
 sp500 = sp500[start:end]  # Select the period
 sp500 = (1+sp500).resample('M').prod()-1  # Upscale to monthly returns
@@ -41,7 +39,7 @@ tbill = tbill/12/100  # Convert to monthly returns
 sp500 = sp500.apply(lambda x: x-tbill.shift(1), axis=0).dropna()
 
 # Shiller macro-finance variables
-shiller = pd.read_excel(data_path + 'Shiller_ie_data.xls',
+shiller = pd.read_excel('../data/Shiller_ie_data.xls',
                         usecols=['Date', 'P', 'D', 'E', 'CAPE'], sheet_name='Data', skiprows=7, skipfooter=1, dtype={'Date': str})
 # Correct excel date format (October appears as YYYY.1, not YYYY.10)
 shiller['Date'] = shiller['Date'].apply(
@@ -215,11 +213,11 @@ def mytable(reg, reg_white, reg_hac, title=None, label=None):
 # Value Weighted
 value_table = mytable(value_reg, value_reg_white, value_reg_hac,
                       title='Testing for Returns Predictability (Value Weighted)', label='tab:value_reg')
-with open('tables/value_reg.tex', 'w') as f:
+with open('../tables/shiller_value_reg.tex', 'w') as f:
     f.write(value_table)
 
 equal_table = mytable(equal_reg, equal_reg_white, equal_reg_hac,
                       title='Testing for Returns Predictability (Equal Weighted)', label='tab:equal_reg')
 
-with open('tables/equal_reg.tex', 'w') as f:
+with open('../tables/shiller_equal_reg.tex', 'w') as f:
     f.write(equal_table)
