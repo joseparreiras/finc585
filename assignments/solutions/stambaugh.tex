@@ -1,56 +1,63 @@
-\citep{stambaugh1999predictive}. You will examine the bias in the slope coefficient in the regression of returns on past dividend yields, when the dividend yield process is highly persistent. Let \(y_t\) denote the return and \(x_t\) the dividend-price ratio (dividend yield) at date \(t\). Consider the following regression equations,
-
-\begin{align*}
-    y_t &= \alpha + \beta x_{t-1} + u_t \\
-    x_t &= \theta + \rho x_{t-1} + v_t
-\end{align*}
-
-for \(t = 1, \dots, T\) and where,
-\[
-    \begin{bmatrix} u_t \\ v_t \end{bmatrix} \sim N(\mathbf 0_2, \Sigma)
-\]
-
-We can write the above equations in matrix form as follows,
-\begin{align*}
-    \mathbf{y} & = \alpha + \beta\mathbf{x} + \mathbf{u} \\ 
-    \mathbf{x}^{+} & = \theta + \rho\mathbf{x} + \mathbf{v}
-\end{align*}
-where,
-\begin{align*}
-    \mathbf y & = \begin{bmatrix} y_1 & \cdots & y_T \end{bmatrix}^\prime \\
-    \mathbf x & = \begin{bmatrix} x_0 & \cdots & x_{T-1} \end{bmatrix}^\prime \\
-    \mathbf x^{+}  & = \begin{bmatrix} x_1 & \cdots & x_T \end{bmatrix}^\prime \\
-    \mathbf u & = \begin{bmatrix} u_1 & \cdots & u_T \end{bmatrix}^\prime \\
-    \mathbf v & = \begin{bmatrix} v_1 & \cdots & v_T \end{bmatrix}^\prime \\
-\end{align*}
-
+\begin{solution}
 \begin{enumerate}[label = (\alph*)]
-    \item  Show that 
+    \item Since
     \[
-        \widehat\beta = \beta + \begin{bmatrix}
-            \mathbf{0} & \mathbf{1} 
-        \end{bmatrix}(\mathbf{X}^\prime \mathbf{X})^{-1}\mathbf{X}^\prime \mathbf{u}
+        \mb y_t = \alpha + \beta \mb x + \mb u = \theta\mb X + \mb u
     \]
-    where \(\mathbf{X} = \begin{bmatrix} \mathbf{1}_T & \mathbf x \end{bmatrix}\)
-    \item Show that \(\mathbf{u}\) can be decomposed as \(\mathbf{u} = \frac{\sigma_{uv}}{\sigma_v^2}\mathbf v + \mathbf e\) where \(e\) is uncorrelated with \(v\), and,
+    Where \(\mb X = \begin{bmatrix} \mb 1_T & \mb x \end{bmatrix}\) and \(\theta = \bp{\alpha , \beta}\). Then the usual OLS estimator of \(\theta\) is given by
     \[
-        \widehat \beta = \beta + \frac{\sigma_{uv}}{\sigma_v^2}\begin{bmatrix}
-            \mathbf{0} & \mathbf{1}
-        \end{bmatrix}\left(\mathbf{X}^\prime \mathbf{X}\right)^{-1}\mathbf{X}^\prime \mathbf{v} + \begin{bmatrix}
-            \mathbf{0} & \mathbf{1}
-        \end{bmatrix}\left(\mathbf{X}^\prime \mathbf{X}\right)^{-1}\mathbf{X}^\prime \mathbf{e}
+        \wh \theta = \left(\mb X^\prime \mb X \right)^{-1}\mb X^\prime \mb y
     \]
-    \item Show that,
+    Therefore \(\beta = \begin{bmatrix} 0 & 1 \end{bmatrix}\theta \) and
+    \begin{align*}
+        \wh\beta & = \begin{bmatrix} 0 & 1 \end{bmatrix}\wh\theta \\
+        & = \begin{bmatrix} 0 & 1 \end{bmatrix}\bs{\theta + \bp{\mb X^\prime\mb X}^{-1}\mb X \mb u} \\
+        & = \beta + \begin{bmatrix} 0 & 1 \end{bmatrix} \bp{\mb X^\prime \mb X}^{-1}\mb X^\prime \mb u
+    \end{align*}
+
+    \item\label{item:u_decomp_solution} Since \(u_t\) and \(v_t\) are jointly normal, then we can write that 
     \[
-        \widehat \rho = \rho + \begin{bmatrix}
-            \mathbf{0} & \mathbf{1}
-        \end{bmatrix}\left(\mathbf{X} \mathbf{X}\right)^{-1}\mathbf{X} \mathbf{v}
+        u_t = \gamma v_t + e_t
     \]
-    \item Show that
+    where \(e_t\) is uncorrelated with \(v_t\) and \(\gamma\) is given by the OLS coefficient \(\gamma = \frac{\sigma_{uv}}{\sigma_v^2}\) . Therefore we can rewrite the equation from the previous item as:
+    \begin{align*}
+        \wh\beta & = \beta + \begin{bmatrix} 0 & 1 \end{bmatrix}\bp{\mb X^\prime \mb X}^{-1}\mb X^\prime \mb u \\
+        & = \beta + \begin{bmatrix} 0 & 1 \end{bmatrix}\bp{\mb X^\prime \mb X}^{-1}\mb X^\prime  \bp{\gamma \mb v + \mb e} \\
+        & = \beta + \frac{\sigma_{uv}}{\sigma_v^2}\begin{bmatrix} 0 & 1 \end{bmatrix}\bp{\mb X^\prime \mb X}^{-1} \mb X^\prime v + \begin{bmatrix} 0 & 1 \end{bmatrix}\bp{\mb X^\prime \mb X}^{-1}\mb X^\prime \mb e
+    \end{align*}
+        
+    \item\label{item:rho_decomp_solution} Follows from the same logic as in the first item.
+    \item Combining item \ref{item:u_decomp_solution} and \ref{item:rho_decomp_solution} we can write that
+    \begin{align*}
+        \wh\beta-\beta = \frac{\sigma_{uv}}{\sigma_v^2}\begin{bmatrix} 0 & 1\end{bmatrix}\bp{\wh\rho-\rho}+ \begin{bmatrix}0 & 1 \end{bmatrix} \bp{\mb X^\prime\mb X}^{-1}\mb X \mb e
+    \end{align*}
+    Then using the assumption that \(e_t\) is independent from \(\mathcal{F}_{t-1}\) (the information from the previous period, which contains the lagged \(\mb X\)), we can take the conditional expectation 
+    \begin{align*}
+        \E[t-1]\bs{\wh\beta-\beta} & = \frac{\sigma_{uv}}{\sigma_v^2}\begin{bmatrix} 0 & 1\end{bmatrix}\E[t-1]\bs{\wh\rho-\rho} + \begin{bmatrix}0 & 1 \end{bmatrix} \bp{\mb X^\prime\mb X}^{-1}\mb X \E[t-1]\bs{\mb e} \\
+        \E[t-1]\bs{\wh\beta-\beta} & = \frac{\sigma_{uv}}{\sigma_v^2}\begin{bmatrix} 0 & 1\end{bmatrix}\E[t-1]\bs{\wh\rho-\rho} \\
+        \E{\wh\beta-\beta} & = \frac{\sigma_{uv}}{\sigma_v^2}\E{\wh\rho-\rho}
+    \end{align*}
+    Using the  expression from \citet{kendall1954note} that implies
     \[
-        \E{\widehat\beta-\beta} = \frac{\sigma_{uv}}{\sigma_v^2} \E{\widehat\rho - \rho}
+        \E{\wh\beta-\beta}\approx -\frac{\sigma_{uv}}{\sigma_v^2}\frac{1+3p}{T}
     \]
-    and, using the expression \(\E{\widehat\rho-\rho}\approx -\frac{1+3p}{T}\), for the finite sample bias of the estimated AR(1) coefficient from \citet{kendall1954note}, discuss the potential magnitude of the bias in \(\widehat\beta\) above, when \(T\) is 50 years, \(\rho = 0.94\) and \(\frac{\sigma_{uv}}{\sigma_v^2} = -1\).
-    \item Try to interpret the implications of your results for predictive regressions more generally. The issues highlighted here have generated a large literature!
-    \item Design a small Monte Carlo study to explore the size of bias in finite samples by experimenting with different values for sample size, \(T\), the degree of persistence in the regressor, \(\rho\), and the (normalized) covariance between the innovations, \(\sigma_{uv}\) (or \(\sigma_{uv}/\sigma_v^2\)). Please report some relevant findings.
+    Using the proposed values of \(T = 50\), \(\rho = 0.94\) and \(\frac{\sigma_{uv}}{\sigma_v^2} = -1\) we would have a bias of \(\wh\beta\) equal to \(0.0764\). Therefore, just from the persistence of the regressor, our estimator would be biased.
+
+    \item This results suggest that the persistence of the regressors can be a real enemy when estimating a predictive regression. As we know, the more persistent the \(x\) (\(\rho \to 1\)) the harder it gets to estimate this parameter and the higher the estimation bias of the AR coefficients. This feeds back to the predictive equation by also increasing the bias of the estimated \(\beta\). This is a problem because we are interested in the predictive power of the regressor, but the more persistent it is, the harder it gets to estimate it and the more biased the estimated \(\beta\) will be. 
+    The interpretation behind this is that, as \(x\) gets more persistent, shocks in the predictor tend to last longer, which makes it harder to estimate the real impact of \(x\) on \(y\).
+
+    \item To start, I fix \(\beta = 1\) and \(\alpha = 0\). The errors \(u\) and \(v\) are set to have unit variance. Then I simulate the model varying the levels of \(T, \sigma_{uv}, \rho\):
+    \begin{align*}
+        T & \in \bc{50, 100, 150, \dots, 1000} \\
+        \sigma_{uv} & \in \bc{-0.9, -0.8, \dots, 0.8, 0.9} \\
+        \rho & \in \bc{0, 0.3, 0.5, 0.9, 0.95, 0.99}
+    \end{align*}
+    Every model is simulated 10.000 times and I calculate the average bias of \(\wh\beta\) among these simulations. The results are shown in Figure~\ref{fig:bias} which displays the absolute level of the bias for each level of \(\rho\), \(\sigma_{uv}\) and \(T\). As we can see, the bias dies out quickly with T, but it is very sensitive to the level of persistence of the regressor. The higher the persistence, the higher the bias and the longer it takes to die out. The same happens with the covariance between the errors. The higher the covariance, the higher the bias and the longer it takes to die out. For higher levels of \(\rho\) such as 0.99, we see that the bias is still big for sample sizes around 150, which can sometimes be considered big.
+    \begin{figure}[!htbp]
+        \centering
+        \includegraphics[width = \textwidth]{bias.jpg}
+        \caption{Bias of the OLS estimator under different levels of \(\rho\), \(\sigma_{uv}\) and \(T\)}
+        \label{fig:bias}
+    \end{figure}
 \end{enumerate}
+\end{solution}

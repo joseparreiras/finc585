@@ -1,0 +1,64 @@
+\documentclass[12pt,twoside]{article}
+
+%%%%%%% Loading packages and macros %%%%%%%
+\usepackage{../preamble/__packages__}
+\usepackage{../preamble/__theme__}
+\usepackage{../preamble/__math__}
+
+\graphicspath{{../../images/}} % Sets the images folder as path
+\SetWatermarkText{}
+\SetWatermarkAngle{45}
+\SetWatermarkScale{3.5}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%% Document %%%%%%%
+\newcommand{\assignment}{Assignment 1}
+\newcommand{\course}{FINC 585-3: Asset Pricing}
+\newcommand{\prof}{Torben Andersen \& Zhengyang Jiang}
+\newcommand{\institute}{Kellogg School of Management}
+
+\title{\course-\assignment}
+\author{}
+\date{Spring 2024}
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\maketitle
+
+The objective of this assignment is to gain familiarity with basic properties of univariate equityindex return series and some standard test statistics gauging the existence of return dependence. Both the daily S\&P 500 and CRSP return series are available under \texttt{data/} on the Canvas site.
+
+\problem
+\input{../problems/hausman_principle.tex}
+\clearpage 
+
+\problem
+\input{../problems/vd_statistic.tex}
+\clearpage
+
+\problem
+\input{../problems/vr_overlapping.tex}
+\clearpage
+
+\problem
+\input{../problems/hong_linton_zhang.tex}
+\clearpage
+
+\problem
+\input{../problems/spearman_test.tex}
+\clearpage
+
+\problem
+\input{../problems/lo_mackinley_crsp.tex}
+\clearpage
+
+\problem 
+\input{../problems/roll_model.tex}
+\clearpage
+
+\problem
+\input{../problems/kyle_model.tex}
+\clearpage
+
+\bibliography{../preamble/__references__}
+\bibliographystyle{abbrvnat}
+\end{document}

@@ -7,44 +7,44 @@
 
 for \(t = 1, \dots, T\) and where,
 \[
-    \begin{bmatrix} u_t \\ v_t \end{bmatrix} \sim N(\mathbf 0_2, \Sigma)
+    \begin{bmatrix} u_t \\ v_t \end{bmatrix} \sim N(\mb 0_2, \Sigma)
 \]
 
 We can write the above equations in matrix form as follows,
 \begin{align*}
-    \mathbf{y} & = \alpha + \beta\mathbf{x} + \mathbf{u} \\ 
-    \mathbf{x}^{+} & = \theta + \rho\mathbf{x} + \mathbf{v}
+    \mb{y} & = \alpha + \beta\mb{x} + \mb{u} \\ 
+    \mb{x}^{+} & = \theta + \rho\mb{x} + \mb{v}
 \end{align*}
 where,
 \begin{align*}
-    \mathbf y & = \begin{bmatrix} y_1 & \cdots & y_T \end{bmatrix}^\prime \\
-    \mathbf x & = \begin{bmatrix} x_0 & \cdots & x_{T-1} \end{bmatrix}^\prime \\
-    \mathbf x^{+}  & = \begin{bmatrix} x_1 & \cdots & x_T \end{bmatrix}^\prime \\
-    \mathbf u & = \begin{bmatrix} u_1 & \cdots & u_T \end{bmatrix}^\prime \\
-    \mathbf v & = \begin{bmatrix} v_1 & \cdots & v_T \end{bmatrix}^\prime \\
+    \mb y & = \begin{bmatrix} y_1 & \cdots & y_T \end{bmatrix}^\prime \\
+    \mb x & = \begin{bmatrix} x_0 & \cdots & x_{T-1} \end{bmatrix}^\prime \\
+    \mb x^{+}  & = \begin{bmatrix} x_1 & \cdots & x_T \end{bmatrix}^\prime \\
+    \mb u & = \begin{bmatrix} u_1 & \cdots & u_T \end{bmatrix}^\prime \\
+    \mb v & = \begin{bmatrix} v_1 & \cdots & v_T \end{bmatrix}^\prime \\
 \end{align*}
 
 \begin{enumerate}[label = (\alph*)]
     \item  Show that 
     \[
         \widehat\beta = \beta + \begin{bmatrix}
-            \mathbf{0} & \mathbf{1} 
-        \end{bmatrix}(\mathbf{X}^\prime \mathbf{X})^{-1}\mathbf{X}^\prime \mathbf{u}
+            \mb{0} & \mb{1} 
+        \end{bmatrix}(\mb{X}^\prime \mb{X})^{-1}\mb{X}^\prime \mb{u}
     \]
-    where \(\mathbf{X} = \begin{bmatrix} \mathbf{1}_T & \mathbf x \end{bmatrix}\)
-    \item Show that \(\mathbf{u}\) can be decomposed as \(\mathbf{u} = \frac{\sigma_{uv}}{\sigma_v^2}\mathbf v + \mathbf e\) where \(e\) is uncorrelated with \(v\), and,
+    where \(\mb{X} = \begin{bmatrix} \mb{1}_T & \mb x \end{bmatrix}\)
+    \item Show that \(\mb{u}\) can be decomposed as \(\mb{u} = \frac{\sigma_{uv}}{\sigma_v^2}\mb v + \mb e\) where \(e\) is uncorrelated with \(v\), and,
     \[
         \widehat \beta = \beta + \frac{\sigma_{uv}}{\sigma_v^2}\begin{bmatrix}
-            \mathbf{0} & \mathbf{1}
-        \end{bmatrix}\left(\mathbf{X}^\prime \mathbf{X}\right)^{-1}\mathbf{X}^\prime \mathbf{v} + \begin{bmatrix}
-            \mathbf{0} & \mathbf{1}
-        \end{bmatrix}\left(\mathbf{X}^\prime \mathbf{X}\right)^{-1}\mathbf{X}^\prime \mathbf{e}
+            \mb{0} & \mb{1}
+        \end{bmatrix}\left(\mb{X}^\prime \mb{X}\right)^{-1}\mb{X}^\prime \mb{v} + \begin{bmatrix}
+            \mb{0} & \mb{1}
+        \end{bmatrix}\left(\mb{X}^\prime \mb{X}\right)^{-1}\mb{X}^\prime \mb{e}
     \]
     \item Show that,
     \[
         \widehat \rho = \rho + \begin{bmatrix}
-            \mathbf{0} & \mathbf{1}
-        \end{bmatrix}\left(\mathbf{X} \mathbf{X}\right)^{-1}\mathbf{X} \mathbf{v}
+            \mb{0} & \mb{1}
+        \end{bmatrix}\left(\mb{X} \mb{X}\right)^{-1}\mb{X} \mb{v}
     \]
     \item Show that
     \[

@@ -1,6 +1,94 @@
-This problem asks you to provide proofs of some results that we cited in Lecture Notes 3.
-
+\begin{solution}
 \begin{enumerate}
-    \item Provide proofs for all the results not proven on pages 4-5 of Lecture Notes
-    \item Provide the derivation for the optimal portfolio in the case where a risk-free asset is present on page 7 of Lecture Notes 3.
+    \item 
+    \setcounter{result}{1}
+    \begin{result} 
+        The Minimum Variance Portfolio, \textbf{MV}, is given by,
+        \[
+            \mb\omega_{MV} = \frac{\mb\Omega^{-1}\mb 1}{\mb 1^\prime\mb\Omega^{-1}\mb 1}
+        \]
+        with Mean and Variance,
+        \[
+            \frac{\mb{\mu}^\prime\mb{\Omega}^{-1}\mb{1}}{\mb{1}^\prime\mb{\Omega}^{-1}\mb{1}} = \frac{A}{C} \quad \text{and} \quad \frac{\mb{1}}{\mb{1}^\prime\mb{\Omega}^{-1}\mb{1}} = \frac{1}{C}
+        \]
+    \end{result}
+    \begin{proof}
+        The MV portfolio is characterized by the solution to the following problem:
+        \[
+            \mb\omega_{MV} \coloneqq \arg\min_{\mb\omega^\prime\mb 1 = 1} \mb\omega^\prime\mb\Omega\mb\omega
+        \]
+        Letting \(2\lambda\) be the lagrangian multiplier of the constraint we have the following first order condition:
+        \[
+            2\mb\Omega\mb\omega_{MV} - 2\lambda\mb 1 = 0 \iff \mb\Omega\mb\omega_{MV} = \lambda\mb 1 \iff \mb\omega_{MV} = \lambda\mb\Omega^{-1}\mb 1
+        \]
+        Using the binding constraint we can solve for \(\lambda\):
+        \begin{align*}
+            1 & = \mb\omega_{MV}\mb 1 \\ 
+            1 & = \lambda \mb 1^\prime \mb \Omega^{-1} \mb 1 \\
+            \lambda & = \frac{1}{\mb 1^\prime \mb \Omega^{-1} \mb 1} \eqqcolon \frac{1}{C}
+        \end{align*}
+        Substitutting back into the solution for \(\mb\omega_{MV}\) we have,
+        \[
+            \mb\omega_{MV} = \frac{\mb\Omega^{-1}\mb 1}{\mb 1^\prime \mb \Omega^{-1} \mb 1}
+        \]
+        The mean and variance of the MV portfolio are given by,
+        \[
+            \mb \mu^\prime \mb\omega_{MV}  = \frac{\mb\mu^\prime\mb\Omega^{-1}\mb 1}{\mb 1^\prime \mb \Omega^{-1} \mb 1} = \frac{A}{C} \quad \text{and} \quad \mb\omega_{MV}^\prime \mb \Omega \mb\omega_{MV} = \frac{\mb 1^\prime \mb \Omega^{-1} \mb 1}{\mb 1^\prime \mb \Omega^{-1} \mb 1} = \frac{1}{C}
+        \]
+    \end{proof}
+
+    \begin{result}
+        Associated with each Efficient Frontier Portfolio, \(\mb\omega_p\), there is a Unique (and Inefficient) Frontier Portfolio, \(\mb \omega_{pz}\), which is uncorrelated with the Former.
+    \end{result}
+    \begin{proof}
+        For any MVF portfolio \(\mb\omega_p\) we can write,
+        \[
+            \mb\omega_p = \mb g + \mu_p\mb h
+        \]
+        where 
+        \[
+            \mb g^\prime \mb 1 = 1 \quad \mb g^\prime\mb\mu = 0 \quad \mb h^\prime\mb 1 = 1 \quad \mb h^\prime \mb \mu = 1
+        \] 
+        Using the previous result we can write \(\mb g\) and \(\mb h\) as functions of \(A,B,C\) and \(D \coloneqq BC-A^2\) as follows (you can verify that this is a solution to the system of equations above),
+        \begin{align*}
+            \mb g & = \frac{B}{D} \mb\Omega^{-1}\mb 1 - \frac{A}{D}\mb\Omega^{-1}\mb \mu \\
+            \mb h& = \frac{C}{D} \mb\Omega^{-1}\mb \mu - \frac{A}{D}\mb\Omega^{-1}\mb 1
+        \end{align*}
+        Now fix 2 MVF portfolios \(p\) and \(pz\). They are uncorrelated iff
+        \begin{align*}
+            0 & = \mb\omega_p^\prime \mb\Omega \mb\omega_{pz} \\
+            0 & =  \bp{\mb g + \mu_p\mb h}^\prime \mb\Omega \bp{\mb g + \mu_{pz}\mb h} \\
+            0 & = \mb g^\prime \mb \Omega \mb g + \bp{\mu_p+\mu_pz}\mb g^\prime\Omega\mb h + \mu_p\mu_{pq}\mb h^\prime\mb\Omega\mb h 
+        \end{align*}
+        Using the formulas for \(\mb g\) and \(\mb h\) this implies
+        \begin{align*}
+            0 & = \frac{B}{D} - \bp{\mu_p+\mu_{pq}}\frac{A}{D} + \mu_p\mu_{pq}\frac{C}{D} \\
+            \mu_{pq}\bp{A - \mu_p C} & = B -\mu_pA \\
+            \mu_{pq} & = \frac{B-\mu_pA}{A-\mu_pC}
+        \end{align*}
+    \end{proof}
+
+    \item The optimal portfolio is defined as the solution to the following problem:
+    \begin{align*}
+        & \min_{\mb \omega} \mb\omega^\prime \mb\Omega \mb \omega \\
+        & \text{s.t.} \quad \mb\omega^\prime \mu + \bp{1-\mb\omega^\prime\mb 1}R_f = \mu_p \\
+    \end{align*}
+    Defining \(\mb{\wt\mu} \coloneqq \mb \mu - R_f\mb 1\) as the respective excess returns we can rewrite the constraint as,
+    \[
+        \mb\omega\mb{\wt\mu} = \wt\mu_p
+    \]
+    Again using \(2\lambda\) as the lagrangian multiplier we can write the first order condition of the above problem as below
+    \[
+        \mb\Omega\mb\omega = \lambda \mb{\wt\mu} \iff \mb \omega = \lambda \mb\Omega^{-1}\mb{\wt\mu}
+    \]
+    Using the constraint:
+    \[
+        \wt\mu_p = \mb\omega^\prime\mb{\wt\mu} = \lambda\mb{\wt\mu}^\prime\Omega^{-1}\mb{\wt\mu} \iff \lambda = \frac{\wt\mu_p}{\mb{\wt\mu}^\prime\Omega^{-1}\mb{\wt\mu}}
+    \]
+    so we conclude that
+    \begin{align*}
+        \mb\omega & = \wt\mu_p \bp{\mb{\wt\mu}^\prime\mb\Omega^{-1}\mb{\wt\mu}}^{-1}\mb\Omega^{-1}\mb{\wt\mu} \\
+        & = \underbrace{\frac{\wt\mu_p\bp{\mb 1^\prime\mb \Omega^{-1}\mb 1}}{\mb{\wt\mu}^\prime\Omega^{-1}\mb{\wt\mu}}}_{c_p} \underbrace{\frac{\mb\Omega^{-1}\mb{\wt\mu}}{\mb 1^\prime \mb\Omega^{-1}\mb{\wt\mu}}}_{w_q}
+    \end{align*}
 \end{enumerate}
+\end{solution}
