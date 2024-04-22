@@ -95,3 +95,31 @@ outfile = "data/Shiller_ie_Data.xls"  # File to save the data
 urllib.request.urlretrieve(url, outfile)  # Request download from URL
 
 db.close()  # Close the connection to WRDS
+
+# Fama French 3 Daily Factors --------------------------------------------------
+
+# Obtain FF5 factors
+ff5_url = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_daily_CSV.zip" # Url
+ffdaily = pd.read_csv(ff5_url, compression = "zip", skiprows = 3, skipfooter = 2) # Download 
+# Rename columns 
+ffdaily.rename({"Unnamed: 0": "date"}, axis = 1, inplace = True)
+ffdaily.rename({x: x.lower() for x in ffdaily.columns}, axis = 1, inplace = True)
+# Format date
+ffdaily['date'] = pd.to_datetime(ffdaily['date'], format = '%Y%m%d')
+
+# Obatin momentum factor
+mom_url = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Momentum_Factor_daily_CSV.zip" # Url
+# Download
+mom = pd.read_csv(mom_url, compression = "zip", skiprows = 13, skipfooter = 2)
+# Rename columns
+mom.rename({"Unnamed: 0": "date"}, axis = 1, inplace = True)
+mom.rename({x: x.lower().strip() for x in mom.columns}, axis = 1, inplace = True)
+# Format date
+mom['date'] = pd.to_datetime(mom['date'], format = '%Y%m%d')
+
+# Merge the two datasets
+ffdaily = ffdaily.merge(mom, how = 'left', on = 'date')
+ffdaily.set_index('date', drop = True, inplace = True)
+ffdaily = np.log(1+ffdaily/100)
+# Export
+ffdaily['2004':].to_csv("../data/ffdaily.csv", index = True, header = True)
