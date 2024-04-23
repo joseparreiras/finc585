@@ -12,19 +12,27 @@
             \end{small}
         \end{figure}
         
-        \item I iterate the PCA analysis using 1 to 8 factors. For each one of these, I calculate the explained variance and a BIC criteria using the formula
-        \begin{equation}
-            \text{BIC} = T\log(\widehat\sigma_\varepsilon^2) + k \log(T)
-        \end{equation}
-        where \(T\) is the length of the time series, \(k\) the number of principal components and \(\widehat\sigma_\varepsilon^2\) the estimated variance of the residuals. This estimate is based on \citet{bishop2006pattern} and is available on the \texttt{scikit-learn} library. Figure~\ref{fig:pca_crit} plots the explained variable and BIC as a function of the number of factors. As we know, increasing the number of factors will always increase the explained variance. However, by penalizing it with the number of parameters estimated (using BIC), we can obtain an optimal number of factors. In this case, the BIC suggest only extracting a single factor. In contrast, the explained variance will always suggest extracting more factors.
+        \item I iterate the PCA analysis using 1 to 8 factors and calculate the explained variance. Figure~\ref{fig:pca_crit} plots the explained variable as a function of the number of factors. As we know, increasing the number of factors will always increase the explained variance. Therefore the explained variance will always suggest extracting more factors.
 
         \begin{figure}[!htbp]
             \begin{small}
                 \begin{center}
                     \includegraphics[width=0.95\textwidth]{pca_explained_variance.png}
                 \end{center}
-                \caption{Explained Variance and BIC as a Function of the Number of Factors}
+                \caption{Explained Variance as a Function of the Number of Factors}
                 \label{fig:pca_crit}
+            \end{small}
+        \end{figure}
+        
+        \item Figure~\ref{fig:returns_eigvals} shows the first 60 eigenvalues of the return matrix. The blue bars show the number of eigenvalues greater than one. Following this rule, we would select 42 factors to explain the 393 stocks. This is another sign that the variation of returns cannot be explained by a small amount of factors (like just the FF5). As there is more room for explanation, new factors can often be added to the model. The root of these factors, however, is unsure, which can lead to the rise of hundreds of proposed factors causing the \textit{Factor Zoo} problem.
+        
+        \begin{figure}[!htbp]
+            \begin{small}
+                \begin{center}
+                    \includegraphics[width=0.95\textwidth]{returns_eigvals.png}
+                \end{center}
+                \caption{Eigenvalues of the Return Matrix}
+                \label{fig:return_eigvals}
             \end{small}
         \end{figure}
         
@@ -40,7 +48,7 @@
             \end{small}
         \end{figure}
         
-        To better understand this relationship, I run an OLS regression with each of the FF factors as a dependent variable and the PCA as the explanatory variables. This tends to capture the linear relationship between these variables. Figure~\ref{fig:pca_ffdaily_r2} shows the R-Squared of each of these regressions. According to this figure, the FF factors which mostly correlate with the PCA are Market and HML, but all of them present a significant relationship as implied by the F-test.
+        To better understand this relationship, I run an OLS regression with each of the FF factors as a dependent variable and the PCs as the explanatory variables. This tends to capture the linear relationship between these variables. Figure~\ref{fig:pca_ffdaily_r2} shows the R-Squared of each of these regressions. According to this figure, the FF factors which mostly correlate with the PC are Market and HML, but all of them present a significant relationship as implied by the F-test.
 
         \begin{figure}[!htbp]
             \begin{small}
@@ -49,6 +57,18 @@
                 \end{center}
                 \caption{R-Squared of the OLS Regression between each FF factor and the Principal Components}
                 \label{fig:pca_ffdaily_r2}
+            \end{small}
+        \end{figure}
+
+        Finally, I orthogonalize the FF factors using the Gram-Schmidt process. This helps us by removing the within factor correlation on the FF data. Figure~\ref{fig:pca_ffdaily_corr_orthogonal} shows the correlation matrix between these series. Comparing it with Figure~\ref{fig:pca_ffdaily_corr} we can see that the orthogonalization has cleaned out some of the correlation between the PC and the FF factors. Interpreting this figure, the first PC captures a mix of most factors. PC2 and 3 strongly correlate with the HML. PC4, 5 and 7 capture the Market factor. PC6 presents a mix of SMB, HML and RMW. Finally PC8 does not strongly capture any of the factors in the data. The Momentum factor also does not seem to strongly correlate with any of the principal components. The importance of HML in the first PCs is an effect of the high number of growth stocks in the current list of S\&P 500 constituents, a pattern which has been changing over time.
+
+        \begin{figure}[!htbp]
+            \begin{small}
+                \begin{center}
+                    \includegraphics[width=0.95\textwidth]{pca_ffdaily_corr_orthogonal.png}
+                \end{center}
+                \caption{Correlation Between PCA and FF Factors (Orthogonalized)}
+                \label{fig:pca_ffdaily_corr_orthogonal}
             \end{small}
         \end{figure}
         
