@@ -122,4 +122,16 @@ ffdaily = ffdaily.merge(mom, how = 'left', on = 'date')
 ffdaily.set_index('date', drop = True, inplace = True)
 ffdaily = np.log(1+ffdaily/100)
 # Export
-ffdaily['2004':].to_csv("../data/ffdaily.csv", index = True, header = True)
+ffdaily.to_csv("../data/ffdaily.csv", index = True, header = True)
+
+# Industry Portfolios ----------------------------------------------------------
+
+# Obtain the data
+ind_url = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/38_Industry_Portfolios_daily_CSV.zip"
+industry = pd.read_csv(ind_url, compression = "zip", skiprows = 9, skipfooter = 25701)
+industry.rename({"Unnamed: 0": "date"}, axis = 1, inplace = True)
+industry['date'] = pd.to_datetime(industry['date'], format = '%Y%m%d')
+industry.set_index('date', drop = True, inplace = True)
+industry = np.log(1+industry/100)
+industry.rename({x: x.lower().strip() for x in industry.columns}, axis = 1, inplace = True)
+industry.to_csv("../data/industry_daily.csv", index = True, header = True)
