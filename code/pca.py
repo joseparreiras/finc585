@@ -76,7 +76,7 @@ class PCAnalysis:
             self.resid(), cov = Sigma, allow_singular = True))
         return 2*k - 2*loglik
 
-num_factors = range(1, 9)
+num_factors = range(1, 11)
 explained_variance = []
 aic = []
 bic = []

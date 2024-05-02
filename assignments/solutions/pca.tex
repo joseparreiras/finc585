@@ -1,111 +1,71 @@
 \begin{solution}
     \begin{enumerate}[label = \Alph*)]
-        \item I extract the first principal component of the log-returns. The time series is shown in Figure \ref{fig:pca_time_series}. This factor can explain about 5\% of the variation in the log-returns. We see that this factor picks up some volatility specially during the financial crises and the COVID-19 pandemic.
+        \item After calculating the excess returns for the \(N = 38\) industry portfolios, the remaining dataset contains \(T = 15265\) daily returns. Using \(k = 1, \dots, 10\) principal components, I calculate the total explained variance ratio for each of the models. This is shown in Figure~\ref{fig:pca_criteria}. As we see, the variance ratio increases monotonically with the number of factors, something that is explained by the nature of the PCA.
         
+        Assuming that the idiosyncratic returns (a.k.a. residuals) are normally distributed, independent over time and with a fixed covariance matrix between industries, the log-likelihood function is given by
+        \[
+            \log\Lc\bs{\bp{\varepsilon_{j,t}}_{j = 1,\dots,N; t = 1, \dots, T}} = -\frac{NT}{2}\log{2\pi} - \frac{T}{2}\log{\det\of\Sigma} - \frac{1}{2}\sum_{t = 1}^{T}\varepsilon_t^\prime\Sigma^{-1}\varepsilon_t,
+        \]
+        Estimating \(\Sigma\) from the time series of residuals I can calculate both the Akaike and the Schwarz Information Criteria (AIC and BIC, respectively) as:
+        \begin{align*}
+            AIC(k) & = 2k - 2 \log\Lc \\
+            BIC(k) & = k\log{NT} - 2 \log\Lc
+        \end{align*}
+        These are ploted along the explained variance in Figure~\ref{fig:pca_criteria}. As it is usual with these measures, they tend to indicate a way more parsimonious model, with maximum criteria being achieved at only 1 factor for all measures.
         \begin{figure}[!htbp]
             \begin{small}
                 \begin{center}
-                    \includegraphics[width=0.95\textwidth]{pca_first_component.png}
+                    \includegraphics[width=\textwidth]{pca_criteria.png}
                 \end{center}
-                \caption{First Principal Component of Log-Returns}
-                \label{fig:pca_time_series}
-            \end{small}
-        \end{figure}
-        
-        \item I iterate the PCA analysis using 1 to 8 factors and calculate the explained variance. Figure~\ref{fig:pca_crit} plots the explained variable as a function of the number of factors. As we know, increasing the number of factors will always increase the explained variance. Therefore the explained variance will always suggest extracting more factors.
-
-        \begin{figure}[!htbp]
-            \begin{small}
-                \begin{center}
-                    \includegraphics[width=0.95\textwidth]{pca_explained_variance.png}
-                \end{center}
-                \caption{Explained Variance as a Function of the Number of Factors}
-                \label{fig:pca_crit}
-            \end{small}
-        \end{figure}
-        
-        \item Figure~\ref{fig:returns_eigvals} shows the first 60 eigenvalues of the return matrix. The blue bars show the number of eigenvalues greater than one. Following this rule, we would select 42 factors to explain the 393 stocks. This is another sign that the variation of returns cannot be explained by a small amount of factors (like just the FF5). As there is more room for explanation, new factors can often be added to the model. The root of these factors, however, is unsure, which can lead to the rise of hundreds of proposed factors causing the \textit{Factor Zoo} problem.
-        
-        \begin{figure}[!htbp]
-            \begin{small}
-                \begin{center}
-                    \includegraphics[width=0.95\textwidth]{returns_eigvals.png}
-                \end{center}
-                \caption{Eigenvalues of the Return Matrix}
-                \label{fig:return_eigvals}
-            \end{small}
-        \end{figure}
-        
-        \item Using the model with 8 factors, I analyze how each one of them correlate with each of the FF factors. For this, I start by showing the correlation matrix between each PCA and FF factor. This is depicted in Figure~\ref{fig:pca_ffdaily_corr}. As we can see, the first PCA factor correlates the most with the FF. PC2 tends to pick up HML as well as some Momentum.  PC4 and PC5 correlate negatively with the Market factor. PC6 seems to pick up some RMW. PC7 and PC8 don't show any significant correlation with the FF factors.
-        
-        \begin{figure}[!htbp]
-            \begin{small}
-                \begin{center}
-                    \includegraphics[width=0.95\textwidth]{pca_ffdaily_corr}
-                \end{center}
-                \caption{Correlation between PCA and FF factors}
-                \label{fig:pca_ffdaily_corr}
-            \end{small}
-        \end{figure}
-        
-        To better understand this relationship, I run an OLS regression with each of the FF factors as a dependent variable and the PCs as the explanatory variables. This tends to capture the linear relationship between these variables. Figure~\ref{fig:pca_ffdaily_r2} shows the R-Squared of each of these regressions. According to this figure, the FF factors which mostly correlate with the PC are Market and HML, but all of them present a significant relationship as implied by the F-test.
-
-        \begin{figure}[!htbp]
-            \begin{small}
-                \begin{center}
-                    \includegraphics[width=0.95\textwidth]{pca_ffdaily_r2.png}
-                \end{center}
-                \caption{R-Squared of the OLS Regression between each FF factor and the Principal Components}
-                \label{fig:pca_ffdaily_r2}
+                \caption{Explained Variance, AIC and BIC as a function of the number of factors}
+                \label{fig:pca_criteria}
             \end{small}
         \end{figure}
 
-        Finally, I orthogonalize the FF factors using the Gram-Schmidt process. This helps us by removing the within factor correlation on the FF data. Figure~\ref{fig:pca_ffdaily_corr_orthogonal} shows the correlation matrix between these series. Comparing it with Figure~\ref{fig:pca_ffdaily_corr} we can see that the orthogonalization has cleaned out some of the correlation between the PC and the FF factors. Interpreting this figure, the first PC captures a mix of most factors. PC2 and 3 strongly correlate with the HML. PC4, 5 and 7 capture the Market factor. PC6 presents a mix of SMB, HML and RMW. Finally PC8 does not strongly capture any of the factors in the data. The Momentum factor also does not seem to strongly correlate with any of the principal components. The importance of HML in the first PCs is an effect of the high number of growth stocks in the current list of S\&P 500 constituents, a pattern which has been changing over time.
+    \item Using the model with 10 factors, I calculate the correlation matrix between the principal components and the Fama-French factors. This is shown in Figure~\ref{fig:pca_ff_corr}. As the figure shows, the first component is highly correlated with the market factor, meaning that the market portfolio is responsible for most of the variation in the industry portfolios. This gets clearer when we look at Figure~\ref{fig:pca_vs_market} which shows the time series of the Market and PC1. The two series very much like each other, indicating that indeed Market is the most important factor. On the other components, PC3 looks to correlate with HML, SMB and CMA. PC4 has high correlation with the Small minus Big (SMB) factor. Finally, the 7th component strongly correlates with the value factor (HML). The other components do not display significant correlation with any of the FF factors.
+    
+    \begin{figure}[!htbp]
+        \begin{small}
+            \begin{center}
+                \includegraphics[width=0.8\textwidth]{factor_corr.png}
+            \end{center}
+            \caption{Correlation between Principal Components and FF}
+            \label{fig:pca_ff_corr}
+        \end{small}
+    \end{figure}
+    
+    \begin{figure}[!htbp]
+        \begin{small}
+            \begin{center}
+                \includegraphics[width=0.8\textwidth]{pca_vs_market.png}
+            \end{center}
+            \caption{PC1 and Market Portfolio}
+            \label{fig:pca_vs_market}
+        \end{small}
+    \end{figure}
+    
+    \item Using \(c = 1, \dots 5\), I calculate the canonical correlation between the PC and the FF factors. The CCA score, or canonical correlation, is shown in Figure~\ref{fig:cca_score}. As we see, the highest canonical correlation is achived with 3 components.  
+    \begin{figure}[!htbp]
+        \begin{small}
+            \begin{center}
+                \includegraphics[width=0.8\textwidth]{cca_score.png}
+            \end{center}
+            \caption{Canonical Correlation between PCA and FF}
+            \label{fig:cca_score}
+        \end{small}
+    \end{figure}
 
-        \begin{figure}[!htbp]
-            \begin{small}
-                \begin{center}
-                    \includegraphics[width=0.95\textwidth]{pca_ffdaily_corr_orthogonal.png}
-                \end{center}
-                \caption{Correlation Between PCA and FF Factors (Orthogonalized)}
-                \label{fig:pca_ffdaily_corr_orthogonal}
-            \end{small}
-        \end{figure}
-        
-        \item I now turn to the Canonical Correlation Analysis (CCA) to analyze the relationship between the FF factors and the PCA factors. I calculate the canonical correlation between these two sets of factors using 1 to 5 components. Figure~\ref{fig:cca_score} shows the canon
-        ical correlation (CCA Score) as a function of the number of components. As we can see, the CCA Score starts to decrease after the inclusion of the 3rd component, suggesting an optimal number.
-        
-        \begin{figure}[!htbp]
-            \begin{small}
-                \begin{center}
-                    \includegraphics[width=0.95\textwidth]{cca_score}
-                \end{center}
-                \caption{CCA Score as a Function of the Number of Components}
-                \label{fig:cca_score}
-            \end{small}
-        \end{figure}
-        
-        \item Using the model with 3 components, I rotate both the PCA and FF factors according to the CCA loadings. This helps us understand the relationship between the two set of factors. Figure~\ref{fig:canonical_variables_scatter} shows the scatter plot of each pair of canonical variables. The correlation between the first 2 pairs appears to be stronger than the 3rd. This can also be seen on the correlation matrix in Figure~\ref{fig:cca_corr}, which shows a strong correlation between the first and second pairs of canonical variables and a weaker correlation with the third pair.
-        
-        \begin{figure}[!htbp]
-            \begin{small}
-                \begin{center}
-                    \includegraphics[width=0.95\textwidth]{canonical_variables_scatter.png}
-                \end{center}
-                \caption{Relationship Between Pairs of Canonical Variables}
-                \label{fig:canonical_variables_scatter}
-            \end{small}
-        \end{figure}
-        
-        \begin{figure}
-            \begin{small}
-                \begin{center}
-                    \includegraphics[width=0.95\textwidth]{cca_corr}
-                \end{center}
-                \caption{Correlation Between Canonical Variables}
-                \label{fig:cca_corr}
-            \end{small}
-        \end{figure}
-        
-    \end{enumerate}
+    \item Finally, the PCA loadings are shown in Figure~\ref{fig:pca_loadings}. Again, the market portfolio has decent loadings in all of the 38 industry portfolios. We can see that some principal components capture specific industries. For example, PC8 has higher loadings only on Steam and Water industries, PC2 on Agricultural, Garbage and Government. Factors 3, 4, 9 and 10 look to capture some of the remaining variance left by the market portfolio.
+
+    \begin{figure}[!htbp]
+        \begin{small}
+            \begin{center}
+                \includegraphics[width=0.95\textwidth]{factor_loadings.png}
+            \end{center}
+            \caption{Factor Loadings on the PCA}
+            \label{fig:pca_loadings}
+        \end{small}
+    \end{figure}
+    
+\end{enumerate}
 \end{solution}

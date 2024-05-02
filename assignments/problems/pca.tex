@@ -1,8 +1,18 @@
-For this question, we are going to use the dataset \texttt{industry.csv} available on CANVAS. This dataset contains 38 Industry Porfolio daily returns avaiable on Kenneth French`s \href{http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html}{website}. Along with this, we will also use the Fama-French 5 + Momentum factors under the \texttt{ffdaily.csv} file.
+For this question, we are going to use the dataset \texttt{industry\_daily.csv} available on CANVAS. This dataset contains 38 Industry Porfolio daily returns avaiable on Kenneth French`s \href{http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html}{website}. Along with this, we will also use the Fama-French 5 + Momentum factors under the \texttt{ffdaily.csv} file.
 
 \begin{enumerate}[label = \Alph*)]
-    \item For a range of \(k = 1, \dots, 8\), calculate the \(k\)\textsuperscript{th} principal components of these industry excess returns (use the risk-free data available on \texttt{ffdaily.csv}). Remember to standardize the returns to have zero mean and unity variance before extracting the principal components. Plot the total explained variance ratio for each of these models. Using this measure, how many factors would you choose? Assuming normality of the log-returns, calculate both the AIC and BIC for each model as well. How many factors would you choose based on these criteria? Compare the results.
+    \item For a range of \(k = 1, \dots, 10\), calculate the \(k\)\textsuperscript{th} principal components of these industry excess returns (use the risk-free data available on \texttt{ffdaily.csv}). Remember to standardize the returns to have zero mean and unity variance before extracting the principal components. Plot the total explained variance ratio for each of these models. Using this measure, how many factors would you choose? Assuming normality of the log-returns, calculate both the AIC and BIC for each model as well. How many factors would you choose based on these criteria? Compare the results.
     \item Pick up the model with 8 factors. Using rotation, how do the principal components correlate with the FF factors? 
-    \item Use the Canonical Correlation Analysis to analyze the relationship between the FF factors and the principal components. Using 1 to 5 CCA components, calculate the canonical correlation between these sets. How does it change with the number of components?
+    \item The Canonical Correlation Analysis is a methodology to capture the association between two sets of variables. Given data \(X_{N_1 \times T}\) and \(Y_{N_2 \times T}\) and a given number of components \(c\), we look to find the \(c \leq \min{N_1, N_2}\) linear combinations of \(X\) and \(Y\) with the greatest correlation, i.e.:
+    \begin{equation}
+        A, B = \argmax_{A, B}\hspace{5pt}\corr{A^\prime X, B^\prime Y}
+    \end{equation}
+    and such that the linear combinations are uncorrelated with each other,
+    \[
+        \cov{A^\prime X, A_j^\prime X} = \cov{B^\prime Y, B_j^\prime Y} = 0 \qquad \forall j = 1, \dots, c - 1
+    \]
+    The transformed variables \(A^\prime X\) and \(B^\prime Y\) are called the canonical variables, and their correlation is the canonical correlation (or score).
+
+    Use the Canonical Correlation Analysis to identify the relationship between the FF factors and the principal components. Using 1 to 5 CCA components, calculate the canonical correlation between these sets. How does it change with the number of components?
     \item Plot the loadings of the PCA for each industry. Give a brief explanation of the results. 
 \end{enumerate}

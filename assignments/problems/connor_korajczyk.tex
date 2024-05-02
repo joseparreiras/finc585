@@ -5,7 +5,7 @@ Let fund's \(j\) excess return at time \(t\) be denoted as \(r_{j,t}\) for \(j =
     \label{eq:fund_returns}
     r_{j,t} = \alpha_j + \sum_{k = 1}^K\beta_j^{(k)}\bp{\gamma^{(k)} + f_t^{(k)}}    + \varepsilon_{j,t}
 \end{equation}
-with \(\E{\bf{f_t}} = 0, \E{\bf{f_tf_t}^\prime} = I_K\) and \(\E{\varepsilon_{j,t}} = 0\), \(\E{\varepsilon_{j,t}\varepsilon_{j,t}^\prime} = \sigma_j^2\), with \(\sigma_j\) bounded from below. We also assume that \(\varepsilon_{\cdot, t}\) is uncorrelated between funds and independent on the set of factors.  
+with \(\E{\bf{f_t}} = 0, \E{\bf{f_tf_t}^\prime} = I_K\) and \(\E{\varepsilon_{j,t}} = 0\), \(\var{\varepsilon_{j,t}} = \sigma_j^2\). We also assume that \(\varepsilon_{\cdot, t}\) is uncorrelated between funds and mean-independent on the set of factors.  
 The Appraisal Ratio is defined as \(t_j = \alpha_j / \sigma_j\), and according to Theorem 4, this ratio is sufficient to rank funds\footnote{i.e, an investor would strictly prefer to switch from investing in fund \(j\) to fund \(l\) if, and only if, \(t_j > t_l\)}.
 
 Let \(\bf{R}\) be the \(N \times T\) matrix of fund returns. The authors show that equation \eqref{eq:fund_returns} can be estimated by the following algorithm.
@@ -20,14 +20,14 @@ Let \(\bf{R}\) be the \(N \times T\) matrix of fund returns. The authors show th
     \item For a large N and T, this estimator is consistent and asymptotically normal:
     \begin{equation}
         \label{eq:appraisal_distribution}
-        \underset{T \to \infty}{\text{dlim}}\hspace{5pt}\underset{N \to \infty}{\text{plim}}\hspace{5pt} T^{1/2}\bp{\wh{t_j} - t_j} \sim N\bp{0, 1 + \sum_{k=1}^K \gamma_k^2}
+        \hspace{5pt}\underset{N \to \infty}{\text{plim}}\hspace{5pt} T^{1/2}\bp{\wh{t_j} - t_j} \dconv N\bp{0, 1 + \sum_{k=1}^K \gamma_k^2} \qquad \text{as } T \to \infty
     \end{equation}
 \end{enumerate}
 
 In this exercise, we will apply this model to a dataset of mutual funds. The dataset \texttt{fund\_returns.csv} available on CANVAS contains a time series of monthly log-returns for a large set of mutual funds from 2000 to 2023 obtained from CRSP.\footnote{This data is available on WRDS under the \texttt{MONTHLY\_RETURNS} dataset on the \texttt{CRSP} library.}. We will also use the data on the Fama-French factors and risk-free rate available on the \texttt{ffdaily.csv} file.
 
 \begin{enumerate}[label = \Alph*)]
-    \item For \(k\) from 1 to 8, calculate the principal components of the funds' excess returns. Plot the explained variance ratio for each of these components. How do these PC compare with the Fama-French factors?
+    \item For \(k\) from 1 to 6, calculate the principal components of the funds' excess returns. Plot the explained variance ratio for each of these components. How do these PC compare with the Fama-French factors?
     \item \citet{connor1993test} provide a methodology to choose the optimal number of factors \(K\) in an approximate factor model. Their test is based on the idea that additional (non-informative) factors will not increase the explained variance of the model. Their algorithm is described as the following iteration:
     \begin{enumerate}[label = \arabic*), leftmargin = *]
         \item For a given number of factors \(k\), estimate the model with \(k\) and \(k+1\) factors. Let the residuals be \(\wh\varepsilon_{j,t}\) and \(\wh\varepsilon^\ast_{j,t}\), respectively;
@@ -42,11 +42,11 @@ In this exercise, we will apply this model to a dataset of mutual funds. The dat
         \begin{equation}
             \wh\Delta_s = \mu_{2s-1} - \mu_{2s}^\ast \qquad s = 1, \dots, \floor{T/2}
         \end{equation}
-        where \(\mu_t = N^{-1}\sum_{j=1}^N\wh\sigma_{j,t}^2\) and \(\mu_t^\ast = N^{-1}\sum_{j=1}^N\bp{\wh\sigma_{j,t}^\ast}^2\). Under the null,
+        where \(\mu_t = N^{-1}\sum_{j=1}^N\wh\sigma_{j,t}^2\) and \(\mu_t^\ast = N^{-1}\sum_{j=1}^N\bp{\wh\sigma_{j,t}^\ast}^2\). Under the null, as \(N \to \infty\)
         \begin{equation}
-            \underset{N \to \infty}{\text{dlim}}\hspace{5pt}\sqrt{N}\wh\Delta \sim N\bp{0, \Gamma}
+            \hspace{5pt}\sqrt{N}\wh\Delta \dconv N\bp{0, \Gamma} 
         \end{equation}
-        \item Using the time series of \(\wh\Delta\), calculate the mean and covariance matrix \(\wh\Gamma\) and perform a one-sided zero mean test: \[\Hc_0: \E\bs{\wh\Delta} \leq 0\]
+        \item Using the time series of \(\wh\Delta\), calculate the mean and covariance matrix \(\wh\Gamma\) and perform a one-sided zero mean test: \[\Hc_0: \E\bs{\wh\Delta} \leq 0 \qquad \Hc_1: \E\bs{\wh\Delta} > 0\]
         \item If the null is rejected, start over with \(k + 1\) factors. Otherwise, set \(K = k\) as the optimal number of factors.
     \end{enumerate}
     

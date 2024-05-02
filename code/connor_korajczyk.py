@@ -167,7 +167,7 @@ def find_factor_number(ck, maxfactors = 10, alpha = 0.05):
 ck = CK_method(fund_returns) # Initiate model
 
 explained_variance = [] # Explained variance
-k_list = list(range(1,9)) # Number of factors to test
+k_list = list(range(1,6)) # Number of factors to test
 for k in k_list:
     ck.fit(nfactors = k) # Fit model
     explained_variance.append(ck.explained_variance_ratio) # Append explained variance
@@ -212,7 +212,7 @@ ax.axvline(crit, color = 'black', linestyle = '--')
 plt.savefig('../images/appraisal_ratio_dist.png')
 
 # Subsamples 
-nbins = 3 # Number of subsamples
+nbins = 2 # Number of subsamples
 datebins = pd.qcut(fund_returns.index, nbins, labels = False) # Split dates into bins
 ck_sub = fund_returns.groupby(datebins).apply(CK_method) # Apply CK method to each subsamples
 

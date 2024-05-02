@@ -99,6 +99,20 @@
 \IfNoValueTF{#2}{\operatorname{\mathbb{P}}\IfValueT{#1}{_{#1}}}%
 {{\operatorname{\mathbb{P}}\IfValueT{#1}{_{#1}}}{\bp{#2}}}}
 
+% Convergence
+\newcommand{\pconv}{\overset{p}{\to}}
+\newcommand{\dconv}{\overset{d}{\to}}
+\newcommand{\asconv}{\overset{as}{\to}}
+\newcommand{\lconv}[1]{\overset{L^{#1}}{\to}}
+
+% Distributions
+\newcommand{\normal}[2]{N\bp{#1, #2}}
+\newcommand{\stdnormal}{\normal{0}{1}}
+\newcommand{\chisq}[1]{\chi^2_{#1}}
+\newcommand{\tstudent}[1]{t_{#1}}
+\newcommand{\f}[2]{\Fc_{#1, #2}}
+\newcommand{\uniform}[1]{Unif #1}
+
 % --- Derivatives ---
 
 % Ordinary derivative in display
