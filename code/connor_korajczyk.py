@@ -144,7 +144,7 @@ def find_factor_number(ck, maxfactors = 10, alpha = 0.05):
         eps = ck.model.resid # Calculate residuals
         sigma = eps**2/(1-(k+1)/tobs-k/nobs) # Corrected sq. resid.
         mu = (sigma).mean(axis = 1) # Average squared residuals 
-        ck.fit(nfactors = k+1) # Fit model with k+1 factors
+        ck.fit(nfactors = k+1) # Fit model with k+1 factors 
         eps_ast = ck.model.resid # Idiosyncratic variance
         sigma_ast = eps_ast**2/(1-(k+2)/tobs-(k+1)/nobs) # Corrected sq. resid.
         mu_ast = (sigma_ast).mean(axis = 1) # Average squared residuals
@@ -152,7 +152,7 @@ def find_factor_number(ck, maxfactors = 10, alpha = 0.05):
         delta_bar = delta.mean() # Average Delta
         gamma = np.sum((delta-delta_bar)**2)/(tobs/2-1) # Variance of Delta
         # Test whether mean(Delta) = 0, i.e. additional factor does not improve
-        test_stat = np.sqrt(nobs)*delta_bar/np.sqrt(gamma)
+        test_stat = 2/tobs*np.sqrt(nobs)*delta_bar/np.sqrt(gamma)
         if test_stat < cval:
             # If null is not rejected, optimal number of factors is found
             break
@@ -185,7 +185,7 @@ ax.set_yticklabels([x.upper() for x in ffdaily.columns], rotation = 0)
 plt.savefig('../images/ck_pca_ff_corr.png', dpi = 300, bbox_inches = 'tight')
 
 # Use CK (1993) paper to find the optimal number of factors
-k_star = find_factor_number(ck, maxfactors = 50, alpha = 0.05)
+k_star = find_factor_number(ck, maxfactors = 10, alpha = 0.025)
 ck.fit(nfactors = k_star)
 
 # Plot explained variance as a function of number of factors

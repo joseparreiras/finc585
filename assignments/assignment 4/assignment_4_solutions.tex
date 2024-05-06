@@ -6,29 +6,32 @@
 \usepackage{../preamble/__math__}
 
 \graphicspath{{../../images/}} % Sets the images folder as path
-\SetWatermarkText{}
+\SetWatermarkText{\textsf{NOT TO BE SHARED}}
 \SetWatermarkAngle{45}
 \SetWatermarkScale{3.5}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%% Document %%%%%%%
-\newcommand{\assignment}{Assignment 4}
+\newcommand{\assignment}{ Assignment 4 }
 \newcommand{\course}{FINC 585-3: Asset Pricing}
 \newcommand{\prof}{Torben G. Andersen \& Zhengyang Jiang}
 \newcommand{\institute}{Kellogg School of Management}
 
 \title{\course-\assignment}
-\author{}
+\author{TA: Jose Antunes-Neto}
 \date{Spring 2024}
 %%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
+\nocite{*}
 \maketitle
 
-\problem
-\input{../problems/fama_macbeth}
-\clearpage
 
-\bibliography{../preamble/__references__}
+\problem
+\input{problems/fama_macbeth}
+\input{solutions/fama_macbeth}
+
+\clearpage
+\bibliography{preamble/__references__}
 \bibliographystyle{abbrvnat}
 \end{document}
