@@ -1,79 +1,79 @@
-% This assignment studies conditions under which the \citeauthor{fama1973risk} estimator is T-consistent (i.e., \(\wh\beta_{FM} \to \beta\), as \(T \to \infty\) for fixed \(N\)). We also look at cases, where the FM standard errors may be biased. You may find it useful to review the papers by \citet{petersen2008estimating} and \citet{skoulakis2008panel}.
+This assignment studies conditions under which the \citeauthor{fama1973risk} estimator is T-consistent (i.e., \(\wh\beta_{FM} \to \beta\), as \(T \to \infty\) for fixed \(N\)). We also look at cases, where the FM standard errors may be biased. You may find it useful to review the papers by \citet{petersen2008estimating} and \citet{skoulakis2008panel}.
 
-% Consider the following model:
-% \begin{equation}
-% \label{eq:y_dgp}
-% y_{it} = \beta x_{it} + \varepsilon_{it} \qquad i = 1, \dots, N \quad t = 1, \dots, T
-% \end{equation}
-% where \(y_{it}\) is the dependent variable and \(x_{it}\) represents the \(K\times 1\) vector of regressors. Suppose:
-% \begin{equation}
-% \label{eq:x_dgp}
-% \begin{aligned}
-%     x_{it} & = \mu_i + \eta_{it} \\
-%     \varepsilon_{it} & = \gamma_i + \nu_{it}
-% \end{aligned}
-% \end{equation}
-% where \(mu_i\) and \(\gamma_i\) are the time-invariant random firm effects.
+Consider the following model:
+\begin{equation}
+\label{eq:y_dgp}
+y_{it} = \beta x_{it} + \varepsilon_{it} \qquad i = 1, \dots, N \quad t = 1, \dots, T
+\end{equation}
+where \(y_{it}\) is the dependent variable and \(x_{it}\) represents the \(K\times 1\) vector of regressors. Suppose:
+\begin{equation}
+\label{eq:x_dgp}
+\begin{aligned}
+    x_{it} & = \mu_i + \eta_{it} \\
+    \varepsilon_{it} & = \gamma_i + \nu_{it}
+\end{aligned}
+\end{equation}
+where \(\mu_i\) and \(\gamma_i\) are the time-invariant random firm effects.
 
-% For a given sample size \(T\), the Fama-Macbeth estimator is given by
-% \begin{equation}
-% \label{eq:fm_estimator}
-% \wh\beta^{(T)}_{FM} = \frac{1}{T} \sum_{t=1}^T  \wh\beta_t
-% \end{equation}
-% with
-% \begin{equation}
-% \label{eq:beta_t}
-% \wh\beta_t = \bp{\sum_{i=1}^N x_{it}x_{it}^\prime}^{-1} \bp{\sum_{i=1}^N x_{it}y_{it}}
-% \end{equation}
+For a given sample size \(T\), the Fama-Macbeth estimator is given by
+\begin{equation}
+\label{eq:fm_estimator}
+\wh\beta^{(T)}_{FM} = \frac{1}{T} \sum_{t=1}^T  \wh\beta_t
+\end{equation}
+with
+\begin{equation}
+\label{eq:beta_t}
+\wh\beta_t = \bp{\sum_{i=1}^N x_{it}x_{it}^\prime}^{-1} \bp{\sum_{i=1}^N x_{it}y_{it}}
+\end{equation}
 
-% We want to check under what conditions the FM estimator is T-consistent (i.e., \(\wh\beta_{FM} \to \beta\) as \(T\to\infty\) for a fixed \(N\)).
+We want to check under what conditions the FM estimator is T-consistent (i.e., \(\wh\beta_{FM} \to \beta\) as \(T\to\infty\) for a fixed \(N\)).
 
-% We will start with some simulations: Set \(K = 1, T = 5.000\) and \(N =20\). From a standard Normal distribution, independently generate:
-% \begin{enumerate}[label = \arabic*.]
-% \item \(\mu_i \quad i = 1, \dots, 20\)
-% \item \(\gamma_i \quad i = 1, \dots, 20\)
-% \item \(\eta_{it} \quad i = 1, \dots, 20 \quad t = 1, \dots, 5.000\)
-% \item \(\nu_{it} \quad i = 1, \dots, 20 \quad t = 1, \dots, 5.000\)
-% \end{enumerate}
+We will start with some simulations: Set \(K = 1, T = 5.000\) and \(N =20\). From a standard Normal distribution, independently generate:
+\begin{enumerate}[label = \arabic*.]
+\item \(\mu_i \quad i = 1, \dots, 20\)
+\item \(\gamma_i \quad i = 1, \dots, 20\)
+\item \(\eta_{it} \quad i = 1, \dots, 20 \quad t = 1, \dots, 5.000\)
+\item \(\nu_{it} \quad i = 1, \dots, 20 \quad t = 1, \dots, 5.000\)
+\end{enumerate}
 
-% \begin{enumerate}[label = (\alph*)]
-% \item  Compute \(\lbrace \varepsilon_{it}, x_{it}\rbrace\) using equation \ref{eq:x_dgp} and then generate the dependent variable using the equation
-% \[
-%     y_{it} = 2x_{it} + \varepsilon_{it} \text{ for } i = 1, \dots, 20 \text{ and } t = 1, \dots, 5.000
-% \]
-% Consider the following estimation methods:
-% \begin{enumerate}[label = \arabic*.]
-%     \item Traditional FM: For each period \(t\), compute \(\wh{\beta}^{(T)}_{FM}\) using equations \ref{eq:fm_estimator} and \ref{eq:beta_t}. Include an intercept term event thought the true intercept is zero. For a given \(T\), call this estimator \(\beta^{(T)}_{FM}\).
-%     \item Demeaned FM: For each firm \(i\), demean both the dependent variable and the regressor by subtracting the time-series averages to get \(\wt{y}_{it} = y_{it} - \bp{1/T}\sum_t y_{it}\) and \(\wt{x}_{it} = x_{it} - \bp{1/T}\sum_t x_{it}\). For a given \(T\), call this estimator \(\wh{\beta}^{(T)}_{DFM}\)
-% \end{enumerate}
-% Compute \(\wh\beta^{(T)}_{FM}\) and \(\wh\beta^{(T)}_{DFM}\) using the first \(T\) periods of your generated data, where \(T = 100, 200, \dots, 4900, 5000\) (increments of 100). For each estimation method, plot both the estimates and the estimation errors (\(\wh\beta^T-2\)) as a function of the sample size \(T\). What pattern do you see in each case? Why should you expect to see these patterns? Explain.
+\begin{enumerate}[label = (\alph*)]
+\item  Compute \(\lbrace \varepsilon_{it}, x_{it}\rbrace\) using equation \ref{eq:x_dgp} and then generate the dependent variable using the equation
+\[
+    y_{it} = 2x_{it} + \varepsilon_{it} \text{ for } i = 1, \dots, 20 \text{ and } t = 1, \dots, 5.000
+\]
+Consider the following estimation methods:
+\begin{enumerate}[label = \arabic*.]
+    \item Traditional FM: For each period \(t\), compute \(\wh{\beta}^{(T)}_{FM}\) using equations \ref{eq:fm_estimator} and \ref{eq:beta_t}. Include an intercept term event thought the true intercept is zero. For a given \(T\), call this estimator \(\beta^{(T)}_{FM}\).
+    \item Demeaned FM: For each firm \(i\), demean both the dependent variable and the regressor by subtracting the time-series averages to get \(\wt{y}_{it} = y_{it} - \bp{1/T}\sum_t y_{it}\) and \(\wt{x}_{it} = x_{it} - \bp{1/T}\sum_t x_{it}\). For a given \(T\), call this estimator \(\wh{\beta}^{(T)}_{DFM}\)
+\end{enumerate}
+Compute \(\wh\beta^{(T)}_{FM}\) and \(\wh\beta^{(T)}_{DFM}\) using the first \(T\) periods of your generated data, where \(T = 100, 200, \dots, 4900, 5000\) (increments of 100). For each estimation method, plot both the estimates and the estimation errors (\(\wh\beta^T-2\)) as a function of the sample size \(T\). What pattern do you see in each case? Why should you expect to see these patterns? Explain.
 
-% \item Use the same sample for \(\varepsilon_{it}\) and \(\eta_{it}\), set \(\mu_i = 0\) and generate the data as
-% \begin{align*}
-%     x_{it} & = \eta_{it} \\
-%     y_{it} & = 2x_{it} + \varepsilon_{it}
-% \end{align*}
-% Repeat (a) above using the new sample. Discuss any differences in the results.
+\item Use the same sample for \(\varepsilon_{it}\) and \(\eta_{it}\), set \(\mu_i = 0\) and generate the data as
+\begin{align*}
+    x_{it} & = \eta_{it} \\
+    y_{it} & = 2x_{it} + \varepsilon_{it}
+\end{align*}
+Repeat (a) above using the new sample. Discuss any differences in the results.
 
-% \item Using the same sample for \(x_{it}\) and \(\nu_{it}\), set \(\gamma_i = 0\) and generate the data as
-% \begin{align*}
-%     \varepsilon_{it} & = \nu_{it} \\
-%     y_{it} & = 2x_{it} + \varepsilon_{it}
-% \end{align*}
-% Repeat (a) above using the new sample. Discuss any differences in the results.
+\item Using the same sample for \(x_{it}\) and \(\nu_{it}\), set \(\gamma_i = 0\) and generate the data as
+\begin{align*}
+    \varepsilon_{it} & = \nu_{it} \\
+    y_{it} & = 2x_{it} + \varepsilon_{it}
+\end{align*}
+Repeat (a) above using the new sample. Discuss any differences in the results.
 
-% \item For (a), (b), and (c), show whether or not the FM estimator and the demeaned FM estimator are T-consistent (Hint: write the expression \(\wh\beta_{FM}-\beta\) as a function of the \(x_{it}\)`s and the \(\varepsilon_{it}\)`s and substitute the definitions in equations \ref{eq:x_dgp}. Then explain what happens when you let \(T \to \infty\)).
+\item For (a), (b), and (c), show whether or not the FM estimator and the demeaned FM estimator are T-consistent (Hint: write the expression \(\wh\beta_{FM}-\beta\) as a function of the \(x_{it}\)`s and the \(\varepsilon_{it}\)`s and substitute the definitions in equations \ref{eq:x_dgp}. Then explain what happens when you let \(T \to \infty\)).
 
-% \item So far we have been using only firm effects. How would the results in (d) change if we included time effects? Specifically, suppose that
-% \begin{align*}
-%     x_{it} & = \delta_t+\eta_{it} \\
-%     \varepsilon_{it} & = \psi_t+\nu_{it}
-% \end{align*}
-% Show (using an argument similar to the one in (d)) whether or not the traditional FM is consistent. What about the Demeaned FM? What are your overall conclusions about the consistency of the FM estimators?
+\item So far we have been using only firm effects. How would the results in (d) change if we included time effects? Specifically, suppose that
+\begin{align*}
+    x_{it} & = \delta_t+\eta_{it} \\
+    \varepsilon_{it} & = \psi_t+\nu_{it}
+\end{align*}
+Show (using an argument similar to the one in (d)) whether or not the traditional FM is consistent. What about the Demeaned FM? What are your overall conclusions about the consistency of the FM estimators?
 
-% \item For each case above, show whether or not the estimated variance of the FM estimator calculated as 
-% \[
-%     S^2\bp{\wh\beta^{(T)}_{FM}} = \frac{1}{T} \sum_t \frac{\bp{\wh\beta_t-\wh\beta_{FM}^{(T)}}^2}{T-1}
-% \]
-% is an unbiased estimator of the true variance \(\var{\wh\beta_{FM}^{(T)}}\). Also show whether or not the true variance \(\var{\wh\beta^{(T)}_{FM}}\) goes to 0 as \(T \to \infty\).
+\item For each case above, show whether or not the estimated variance of the FM estimator calculated as 
+\[
+    S^2\bp{\wh\beta^{(T)}_{FM}} = \frac{1}{T} \sum_t \frac{\bp{\wh\beta_t-\wh\beta_{FM}^{(T)}}^2}{T-1}
+\]
+is an unbiased estimator of the true variance \(\var{\wh\beta_{FM}^{(T)}}\). Also show whether or not the true variance \(\var{\wh\beta^{(T)}_{FM}}\) goes to 0 as \(T \to \infty\).
 \end{enumerate}

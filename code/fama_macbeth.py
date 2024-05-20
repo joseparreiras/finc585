@@ -13,6 +13,8 @@ import seaborn as sns
 
 nupurple = "#492C7F"
 
+sns.set_theme(context="notebook", style="darkgrid", palette="colorblind", font_scale=1.25)
+
 # Simulation -------------------------------------------------------------------
 """
 In this question we will exemplify the consistency of the Fama-Macbeth estimator using a simulated environment.
@@ -79,10 +81,9 @@ fig, ax = plt.subplots(figsize=(10, 6))
 ax.axhline(beta, color="black", linestyle="--")
 ax.plot(tobs_range, beta_fm, color=nupurple, label="Traditional")
 ax.plot(tobs_range, beta_dfm, linestyle="--", color=nupurple, label="Demeaned")
-ax.legend(loc="upper center", frameon=False, ncol=2)
-ax.set_ylim(1.92, 2.04)
+ax.legend(loc="upper center", frameon=False, ncol=2, bbox_to_anchor=(0.5, 1.1))
 ax.set_xlabel("Number of Observations")
-plt.savefig("images/beta_fm_a.png", dpi=1200, bbox_inches="tight")
+plt.savefig("../images/beta_fm_a.png", dpi=300, bbox_inches="tight")
 
 # (b)
 """
@@ -105,10 +106,10 @@ fig, ax = plt.subplots(figsize=(10, 6))
 ax.axhline(beta, color="black", linestyle="--")
 ax.plot(tobs_range, beta_fm, color=nupurple, label="Traditional")
 ax.plot(tobs_range, beta_dfm, linestyle="--", color=nupurple, label="Demeaned")
-ax.legend(loc="upper center", frameon=False, ncol=2)
+ax.legend(loc="upper center", frameon=False, ncol=2, bbox_to_anchor=(0.5, 1.1))
 ax.set_ylim(1.92, 2.04)
 ax.set_xlabel("Number of Observations")
-plt.savefig("images/beta_fm_b.png", dpi=1200, bbox_inches="tight")
+plt.savefig("../images/beta_fm_b.png", dpi=300, bbox_inches="tight")
 
 # (c)
 """
@@ -132,7 +133,7 @@ fig, ax = plt.subplots(figsize=(10, 6))
 ax.axhline(beta, color="black", linestyle="--")
 ax.plot(tobs_range, beta_fm, color=nupurple, label="Traditional")
 ax.plot(tobs_range, beta_dfm, linestyle="--", color=nupurple, label="Demeaned")
-ax.legend(loc="upper center", frameon=False, ncol=2)
+ax.legend(loc="upper center", frameon=False, ncol=2, bbox_to_anchor=(0.5, 1.1))
 ax.set_ylim(1.92, 2.04)
 ax.set_xlabel("Number of Observations")
-plt.savefig("images/beta_fm_c.png", dpi=1200, bbox_inches="tight")
+plt.savefig("../images/beta_fm_c.png", dpi=300, bbox_inches="tight")

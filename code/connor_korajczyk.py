@@ -33,6 +33,7 @@ ffdaily['date']= pd.to_datetime(ffdaily['date'], format = '%Y-%m-%d')
 ffdaily.set_index('date', inplace = True, drop = True)
 risk_free = ffdaily['rf'].resample('MS').sum() # Monthly risk-free rate
 ffdaily.drop(columns = 'rf', inplace = True) # Drop risk-free rate
+ffdaily = ffdaily.resample('MS').sum()
 
 # Calculate funds excess returns
 fund_returns = fund_returns.apply(lambda x: x - risk_free, axis = 0)
@@ -134,10 +135,10 @@ def find_factor_number(ck, maxfactors = 10, alpha = 0.05):
     Returns:
         int: Optimal number of factors
     """
-    from scipy.stats import norm
-    cval = norm.ppf(1-alpha) # Normal critical value
+    from scipy.stats import t
     tobs = ck.returns.shape[0] # Number of dates
     nobs = ck.returns.shape[1] # Number of funds
+    cval = t.ppf(1-alpha, tobs/2-1) # Normal critical value
     k = 1 # Start counter
     while k < maxfactors:
         ck.fit(nfactors = k) # Fit model with k factors
@@ -152,7 +153,7 @@ def find_factor_number(ck, maxfactors = 10, alpha = 0.05):
         delta_bar = delta.mean() # Average Delta
         gamma = np.sum((delta-delta_bar)**2)/(tobs/2-1) # Variance of Delta
         # Test whether mean(Delta) = 0, i.e. additional factor does not improve
-        test_stat = 2/tobs*np.sqrt(nobs)*delta_bar/np.sqrt(gamma)
+        test_stat = np.sqrt(tobs/2-1)*delta_bar/np.sqrt(gamma)
         if test_stat < cval:
             # If null is not rejected, optimal number of factors is found
             break
@@ -167,7 +168,7 @@ def find_factor_number(ck, maxfactors = 10, alpha = 0.05):
 ck = CK_method(fund_returns) # Initiate model
 
 explained_variance = [] # Explained variance
-k_list = list(range(1,6)) # Number of factors to test
+k_list = list(range(1,7)) # Number of factors to test
 for k in k_list:
     ck.fit(nfactors = k) # Fit model
     explained_variance.append(ck.explained_variance_ratio) # Append explained variance
@@ -175,7 +176,7 @@ for k in k_list:
         components = ck.factors # Save components
 
 # Calculate correlation matrix between PCA and FF
-allfactors = pd.concat([ffdaily, components], axis = 1)
+allfactors = pd.concat([ffdaily, components], axis = 1).dropna()
 corr_matrix = allfactors.corr().loc[ffdaily.columns, components.columns] 
 
 fig, ax = plt.subplots()
@@ -185,7 +186,7 @@ ax.set_yticklabels([x.upper() for x in ffdaily.columns], rotation = 0)
 plt.savefig('../images/ck_pca_ff_corr.png', dpi = 300, bbox_inches = 'tight')
 
 # Use CK (1993) paper to find the optimal number of factors
-k_star = find_factor_number(ck, maxfactors = 10, alpha = 0.025)
+k_star = find_factor_number(ck, maxfactors = 50, alpha = 0.025)
 ck.fit(nfactors = k_star)
 
 # Plot explained variance as a function of number of factors

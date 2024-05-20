@@ -18,18 +18,14 @@ nupurple = "#492C7F"
 
 # Data -------------------------------------------------------------------------
 
-# Sample period
-start = "1993-02-01"
-end = "2023-01-31"
 
-spy = pd.read_csv(
-    "data/SPY_HF.csv", dtype={"DATE": "str", "TIME": "str", "PRICE": float}
-)  # Read the data
+spy = pd.read_csv("../data/SPY_HF.zip", compression = 'zip')  # Read the data
 # Combine DATE and TIME columns for index
-spy.index = pd.to_datetime(spy["DATE"] + spy["TIME"], format="%Y%m%d%H%M")
+spy.rename({x: x.lower() for x in spy.columns}, axis = 1, inplace = True)
+spy['datetime'] = pd.to_datetime(spy['datetime'], format = '%d%b%Y:%H:%M:%S')
+spy = spy.set_index('datetime', drop = True).drop(columns = ['symbol'])
 # Drop unnecessary columns
-spy = spy["PRICE"]
-spy = spy[start:end]  # Subset for sample period
+spy = spy["price"]
 spy = np.log(spy)  # Log price
 
 # 1) ---------------------------------------------------------------------------
